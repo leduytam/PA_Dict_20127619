@@ -4,7 +4,8 @@
     <list default="true" id="4b129966-5249-4138-8042-99687ed3a129" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/services/SlangHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/services/SlangService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangDictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +70,7 @@
       <workItem from="1668706917888" duration="25000" />
       <workItem from="1668931022804" duration="116000" />
       <workItem from="1668931163342" duration="7879000" />
-      <workItem from="1668962188308" duration="1571000" />
+      <workItem from="1668962188308" duration="3785000" />
     </task>
     <servers />
   </component>

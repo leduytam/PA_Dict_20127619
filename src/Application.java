@@ -1,8 +1,7 @@
-import com.dictionary.word.slang.services.SlangService;
-import com.dictionary.word.slang.utils.Constant;
-import com.dictionary.word.slang.utils.FileIO;
+import com.dictionary.word.slang.objects.SlangDictionary;
+import com.dictionary.word.slang.objects.SlangQuiz;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class Application implements Runnable {
     public static void main(String[] args) {
@@ -11,13 +10,19 @@ public class Application implements Runnable {
 
     @Override
     public void run() {
-        String keyword = "word";
+        SlangDictionary slang = SlangDictionary.getInstance();
+        String[][] slangList = slang.getAll();
+//
+//        for (var s : slangList) {
+//            System.out.println(Arrays.toString(s));
+//        }
 
-        SlangService slang = SlangService.getInstance();
-        String[][] results = slang.searchByDefinition(keyword);
+        List<SlangQuiz> quizzes = slang.generateRandomQuizzes(5, false);
 
-        for (String[] result : results) {
-            System.out.println(Arrays.toString(result));
+        for (SlangQuiz quiz : quizzes) {
+            System.out.println(quiz);
+            System.out.println();
+            System.out.println();
         }
     }
 }

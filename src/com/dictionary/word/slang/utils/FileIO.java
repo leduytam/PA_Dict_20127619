@@ -6,22 +6,22 @@ import java.util.List;
 
 public class FileIO {
     public static SortedMap<String, List<String>> readMap(String filePath) {
-        var map = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
+        TreeMap<String, List<String>> map = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
         String line = null;
 
-        try (var reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             while ((line = reader.readLine()) != null) {
-                var tokens = line.split(Constant.Regex.SLANG_DEFINITION_SPLIT_REGEX);
+                String[] tokens = line.split(Constant.Regex.SLANG_DEFINITION_SPLIT_REGEX);
 
                 if (tokens.length != 2 || tokens[0].isBlank()) {
                     continue;
                 }
 
-                var slang = tokens[0].trim();
-                var definitions = new ArrayList<>(Arrays.asList(tokens[1].split(Constant.Regex.DEFINITION_SPLIT_REGEX)));
+                String slang = tokens[0].trim();
+                ArrayList<String> definitions = new ArrayList<>(Arrays.asList(tokens[1].split(Constant.Regex.DEFINITION_SPLIT_REGEX)));
 
                 if (map.containsKey(slang)) {
-                    var newDefinitions = map.get(slang);
+                    List<String> newDefinitions = map.get(slang);
                     newDefinitions.addAll(definitions);
                     map.put(slang, newDefinitions);
                 } else {
@@ -37,10 +37,10 @@ public class FileIO {
     }
 
     public static void writeMap(SortedMap<String, List<String>> map, String filePath) {
-        try (var writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (var entry : map.entrySet()) {
-                var slang = entry.getKey();
-                var definitions = String.join(Constant.Regex.DEFINITION_JOIN_DELIMITER, entry.getValue());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+                String slang = entry.getKey();
+                String definitions = String.join(Constant.Regex.DEFINITION_JOIN_DELIMITER, entry.getValue());
                 writer.write(String.format("%s`%s", slang, definitions));
                 writer.newLine();
             }
@@ -50,10 +50,10 @@ public class FileIO {
     }
 
     public static List<String> readHistory(String filePath) {
-        var history = new ArrayList<String>();
+        ArrayList<String> history = new ArrayList<String>();
         String line = null;
 
-        try (var reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             while ((line = reader.readLine()) != null) {
                 if (line.isBlank()) {
                     continue;
@@ -69,8 +69,8 @@ public class FileIO {
     }
 
     public static void writeHistory(List<String> histories, String filePath) {
-        try (var writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (var history : histories) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (String history : histories) {
                 writer.write(history);
                 writer.newLine();
             }

@@ -1,23 +1,23 @@
-package com.dictionary.word.slang.services;
+package com.dictionary.word.slang.objects;
 
 import com.dictionary.word.slang.utils.Constant;
 import com.dictionary.word.slang.utils.FileIO;
 
 import java.util.List;
 
-public class SlangHistoryService {
-    private static SlangHistoryService instance;
+public class SlangHistory {
+    private static SlangHistory instance;
     private final List<String> slangHistory;
     private final List<String> definitionHistory;
 
-    private SlangHistoryService() {
+    private SlangHistory() {
         slangHistory = FileIO.readHistory(Constant.Path.SLANG_HISTORY);
         definitionHistory = FileIO.readHistory(Constant.Path.DEFINITION_HISTORY);
     }
 
-    public static synchronized SlangHistoryService getInstance() {
+    public static synchronized SlangHistory getInstance() {
         if (instance == null) {
-            instance = new SlangHistoryService();
+            instance = new SlangHistory();
         }
 
         return instance;
