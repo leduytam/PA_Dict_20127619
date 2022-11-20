@@ -1,7 +1,4 @@
-import com.dictionary.word.slang.objects.SlangDictionary;
-import com.dictionary.word.slang.objects.SlangQuiz;
-
-import java.util.List;
+import com.dictionary.word.slang.views.SlangFrame;
 
 public class Application implements Runnable {
     public static void main(String[] args) {
@@ -10,19 +7,6 @@ public class Application implements Runnable {
 
     @Override
     public void run() {
-        SlangDictionary slang = SlangDictionary.getInstance();
-        String[][] slangList = slang.getAll();
-//
-//        for (var s : slangList) {
-//            System.out.println(Arrays.toString(s));
-//        }
-
-        List<SlangQuiz> quizzes = slang.generateRandomQuizzes(5, false);
-
-        for (SlangQuiz quiz : quizzes) {
-            System.out.println(quiz);
-            System.out.println();
-            System.out.println();
-        }
+        new SlangFrame();
     }
 }

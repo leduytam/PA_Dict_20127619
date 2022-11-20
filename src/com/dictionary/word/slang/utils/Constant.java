@@ -17,4 +17,10 @@ public class Constant {
         public final static String DEFINITION_SPLIT_REGEX = "\\| ";
         public final static String DEFINITION_JOIN_DELIMITER = "| ";
     }
+
+    public static class View {
+        public static final String[] TABLE_COLUMN_NAMES = {"#", "Slang", "Definition"};
+        public static final String[] SEARCH_BY_VALUES = {"Slang", "Definition"};
+
+    }
 }

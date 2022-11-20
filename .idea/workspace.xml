@@ -3,10 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4b129966-5249-4138-8042-99687ed3a129" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/big-slang-dictionary.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/big-base-slang-dictionary.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/definition-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/definition-history.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/slang-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/slang-history.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/services/SlangHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/services/SlangService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangDictionary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +27,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2HgN2mPmuwkPUDikpEpDjiEvujh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -34,18 +38,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tamle/projects/java-projects/slang-word-dictionary&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/tamle/projects/java-projects/slang-word-dictionary/data",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Application" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Application" />
@@ -70,7 +79,7 @@
       <workItem from="1668706917888" duration="25000" />
       <workItem from="1668931022804" duration="116000" />
       <workItem from="1668931163342" duration="7879000" />
-      <workItem from="1668962188308" duration="3785000" />
+      <workItem from="1668962188308" duration="5522000" />
     </task>
     <servers />
   </component>
