@@ -4,6 +4,8 @@ import com.dictionary.word.slang.objects.SlangDictionary;
 import com.dictionary.word.slang.utils.Constant;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -32,6 +34,16 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     private void initComponents() {
+        // ========================= CONTROLS PANEL =========================
+        JPanel panelControls = new JPanel();
+        panelControls.setBorder(new TitledBorder("Controls"));
+        panelControls.setPreferredSize(new Dimension(400, 325));
+
+        // ========================= QUIZ PANEL =========================
+        JPanel panelQuiz = new JPanel();
+        panelQuiz.setBorder(new TitledBorder("Quizzes"));
+        panelQuiz.setPreferredSize(new Dimension(400, 325));
+
         // ========================= TABLE PANEL =========================
         JPanel panelTable = new JPanel(new GridLayout());
 
@@ -54,8 +66,8 @@ public class SlangFrame extends JFrame implements ActionListener {
         JPanel searchPanel = new JPanel();
 
         tfKeyword = new JTextField();
-        tfKeyword.setColumns(20);
-        tfKeyword.setPreferredSize(new Dimension(120, 30));
+        tfKeyword.setColumns(25);
+        tfKeyword.setPreferredSize(new Dimension(150, 30));
         tfKeyword.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -68,14 +80,14 @@ public class SlangFrame extends JFrame implements ActionListener {
         });
 
         cbxSearchBy = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
-        cbxSearchBy.setPreferredSize(new Dimension(100, 30));
+        cbxSearchBy.setPreferredSize(new Dimension(90, 30));
 
         btnSearch = new JButton("Search");
-        btnSearch.setPreferredSize(new Dimension(100, 30));
+        btnSearch.setPreferredSize(new Dimension(90, 30));
         btnSearch.addActionListener(this);
 
         btnHistory = new JButton("History");
-        btnHistory.setPreferredSize(new Dimension(100, 30));
+        btnHistory.setPreferredSize(new Dimension(90, 30));
         btnHistory.addActionListener(this);
 
         searchPanel.add(tfKeyword);
@@ -94,12 +106,29 @@ public class SlangFrame extends JFrame implements ActionListener {
         panelSearchDescription.add(lbSearchResultsCount);
         panelSearchDescription.add(lbSearchTime);
 
-        //  ========================= MAIN PANEL =========================
-        JPanel panelContainer = new JPanel(new BorderLayout());
-        panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
-        panelContainer.add(searchPanel);
-        panelContainer.add(panelSearchDescription);
-        panelContainer.add(panelTable);
+        // ========================= LEFT PANEL =========================
+        JPanel panelLeft = new JPanel();
+        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
+        panelLeft.add(panelControls);
+        panelLeft.add(panelQuiz);
+
+        // ========================= RIGHT PANEL =========================
+        JPanel panelRight = new JPanel(new BorderLayout());
+        panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
+        panelRight.add(searchPanel);
+        panelRight.add(panelSearchDescription);
+        panelRight.add(panelTable);
+
+        // ========================= CONTAINER PANEL =========================
+        JPanel panelContainer = new JPanel(new GridBagLayout());
+        panelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.insets = new Insets(4, 2, 4, 2);
+        panelContainer.add(panelLeft, gbc);
+        panelContainer.add(Box.createRigidArea(new Dimension(10, 0)));
+        panelContainer.add(panelRight, gbc);
 
         add(panelContainer);
     }
