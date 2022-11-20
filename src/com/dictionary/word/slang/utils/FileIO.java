@@ -49,6 +49,36 @@ public class FileIO {
         }
     }
 
+    public static List<String> readHistory(String filePath) {
+        var history = new ArrayList<String>();
+        String line = null;
+
+        try (var reader = new BufferedReader(new FileReader(filePath))) {
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
+                    continue;
+                }
+
+                history.add(line);
+            }
+        } catch (IOException ignored) {
+            // If file not found. Do nothing
+        }
+
+        return history;
+    }
+
+    public static void writeHistory(List<String> histories, String filePath) {
+        try (var writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (var history : histories) {
+                writer.write(history);
+                writer.newLine();
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     public static boolean isExists(String filePath) {
         File file = new File(filePath);
         return file.exists() && !file.isDirectory();

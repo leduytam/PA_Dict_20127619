@@ -45,6 +45,8 @@ public class SlangService {
             return getAll();
         }
 
+        SlangHistoryService.getInstance().addSlang(slang);
+
         var nextLastChar = (char) (slang.charAt(slang.length() - 1) + 1);
         var end = slang.substring(0, slang.length() - 1) + nextLastChar;
         var resultsMap = slangMap.subMap(slang, end);
@@ -61,6 +63,8 @@ public class SlangService {
         if (definition.isBlank()) {
             return getAll();
         }
+
+        SlangHistoryService.getInstance().addDefinition(definition);
 
         var results = new ArrayList<String[]>();
 
