@@ -24,12 +24,20 @@ public class SlangHistory {
     }
 
     public void addSlang(String slang) {
+        if (slang.isBlank()) {
+            return;
+        }
+
         slangHistory.remove(slang);
         slangHistory.add(0, slang);
         FileIO.writeHistory(slangHistory, Constant.Path.SLANG_HISTORY);
     }
 
     public void addDefinition(String definition) {
+        if (definition.isBlank()) {
+            return;
+        }
+
         definitionHistory.remove(definition);
         definitionHistory.add(0, definition);
         FileIO.writeHistory(definitionHistory, Constant.Path.DEFINITION_HISTORY);

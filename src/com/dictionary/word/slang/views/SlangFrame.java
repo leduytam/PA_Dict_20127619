@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.AbstractMap;
 
 public class SlangFrame extends JFrame implements ActionListener {
     private final DefaultTableModel model;
@@ -119,6 +120,10 @@ public class SlangFrame extends JFrame implements ActionListener {
         if (source.equals(btnSearch)) {
             handleSearch();
         }
+
+        if (source.equals(btnHistory)) {
+            handleShowHistory();
+        }
     }
 
     private void handleSearch() {
@@ -150,6 +155,17 @@ public class SlangFrame extends JFrame implements ActionListener {
         model.setRowCount(0);
         for (String[] row : data) {
             model.addRow(row);
+        }
+    }
+
+    private void handleShowHistory() {
+        SlangHistoryDialog dialog = new SlangHistoryDialog(this);
+        AbstractMap.SimpleEntry<Integer, String> result = dialog.showDialog();
+
+        if (result != null) {
+            cbxSearchBy.setSelectedIndex(result.getKey());
+            tfKeyword.setText(result.getValue());
+            btnSearch.doClick();
         }
     }
 }
