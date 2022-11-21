@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4b129966-5249-4138-8042-99687ed3a129" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/definition-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/definition-history.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/slang-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/slang-history.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangHistoryDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangHistoryDialog.java" afterDir="false" />
     </list>
@@ -38,18 +36,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/tamle/projects/java-projects/slang-word-dictionary/data",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/tamle/projects/java-projects/slang-word-dictionary/data&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data" />
@@ -79,7 +77,8 @@
       <workItem from="1668706917888" duration="25000" />
       <workItem from="1668931022804" duration="116000" />
       <workItem from="1668931163342" duration="7879000" />
-      <workItem from="1668962188308" duration="7365000" />
+      <workItem from="1668962188308" duration="7623000" />
+      <workItem from="1669011243101" duration="3554000" />
     </task>
     <servers />
   </component>

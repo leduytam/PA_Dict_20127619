@@ -14,10 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.AbstractMap;
+import java.util.List;
 
 public class SlangFrame extends JFrame implements ActionListener {
     private final DefaultTableModel model;
-    private JTextField tfKeyword;
+    private JTextField tfSearch;
     private JComboBox<String> cbxSearchBy;
     private JButton btnSearch;
     private JButton btnHistory;
@@ -25,24 +26,79 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JLabel lbSearchResultsCount;
     private String lastSearchKeyword = "";
     private int lastSelectedSearchByIndex = 0;
+    private JButton btnRandom;
+    private JTextField tfSlangRandom;
+    private JTextField tfDefinitionRandom;
 
     public SlangFrame() {
         model = new DefaultTableModel(SlangDictionary.getInstance().getAll(), Constant.View.TABLE_COLUMN_NAMES);
 
         initComponents();
         loadFrameSettings();
+
+        tfSearch.requestFocus();
     }
 
     private void initComponents() {
         // ========================= CONTROLS PANEL =========================
         JPanel panelControls = new JPanel();
         panelControls.setBorder(new TitledBorder("Controls"));
-        panelControls.setPreferredSize(new Dimension(400, 325));
+        panelControls.setPreferredSize(new Dimension(400, 220));
 
         // ========================= QUIZ PANEL =========================
         JPanel panelQuiz = new JPanel();
         panelQuiz.setBorder(new TitledBorder("Quizzes"));
-        panelQuiz.setPreferredSize(new Dimension(400, 325));
+        panelQuiz.setPreferredSize(new Dimension(400, 220));
+
+        // ========================= QUIZ PANEL =========================
+        JPanel panelRandom = new JPanel(new GridBagLayout());
+        panelRandom.setBorder(new TitledBorder("Did you know?"));
+//        panelRandom.setPreferredSize(new Dimension(400, 220));
+
+        JLabel lbSlangRandom = new JLabel("Slang: ");
+        JLabel lbDefinitionRandom = new JLabel("Definition: ");
+
+        tfSlangRandom = new JTextField();
+        tfSlangRandom.setPreferredSize(new Dimension(300, 30));
+        tfSlangRandom.setEditable(false);
+
+        tfDefinitionRandom = new JTextField();
+        tfDefinitionRandom.setPreferredSize(new Dimension(300, 30));
+        tfDefinitionRandom.setEditable(false);
+
+        lbSlangRandom.setLabelFor(tfSlangRandom);
+        lbDefinitionRandom.setLabelFor(tfDefinitionRandom);
+
+        btnRandom = new JButton("Random");
+        btnRandom.setPreferredSize(new Dimension(100, 30));
+        btnRandom.addActionListener(this);
+        btnRandom.doClick();
+
+        GridBagConstraints gbcRandom = new GridBagConstraints();
+        gbcRandom.insets = new Insets(5, 5, 5, 5);
+
+        gbcRandom.gridx = 0;
+        gbcRandom.gridy = 0;
+        gbcRandom.anchor = GridBagConstraints.WEST;
+
+        panelRandom.add(lbDefinitionRandom, gbcRandom);
+        gbcRandom.gridy = 1;
+        panelRandom.add(lbSlangRandom, gbcRandom);
+
+        gbcRandom.gridx = 1;
+        gbcRandom.gridy = 0;
+        gbcRandom.weightx = 1;
+        gbcRandom.fill = GridBagConstraints.HORIZONTAL;
+
+        panelRandom.add(tfSlangRandom, gbcRandom);
+        gbcRandom.gridy = 1;
+        panelRandom.add(tfDefinitionRandom, gbcRandom);
+
+        gbcRandom.gridx = 1;
+        gbcRandom.gridy = 2;
+        JPanel panelRandomButton = new JPanel(new FlowLayout(FlowLayout.TRAILING, 0, 0));
+        panelRandomButton.add(btnRandom);
+        panelRandom.add(panelRandomButton, gbcRandom);
 
         // ========================= TABLE PANEL =========================
         JPanel panelTable = new JPanel(new GridLayout());
@@ -65,10 +121,10 @@ public class SlangFrame extends JFrame implements ActionListener {
         // ========================= SEARCH PANEL =========================
         JPanel searchPanel = new JPanel();
 
-        tfKeyword = new JTextField();
-        tfKeyword.setColumns(25);
-        tfKeyword.setPreferredSize(new Dimension(150, 30));
-        tfKeyword.addKeyListener(new KeyAdapter() {
+        tfSearch = new JTextField();
+        tfSearch.setColumns(25);
+        tfSearch.setPreferredSize(new Dimension(150, 30));
+        tfSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
@@ -90,7 +146,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         btnHistory.setPreferredSize(new Dimension(90, 30));
         btnHistory.addActionListener(this);
 
-        searchPanel.add(tfKeyword);
+        searchPanel.add(tfSearch);
         searchPanel.add(cbxSearchBy);
         searchPanel.add(btnSearch);
         searchPanel.add(btnHistory);
@@ -111,6 +167,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
         panelLeft.add(panelControls);
         panelLeft.add(panelQuiz);
+        panelLeft.add(panelRandom);
 
         // ========================= RIGHT PANEL =========================
         JPanel panelRight = new JPanel(new BorderLayout());
@@ -135,7 +192,7 @@ public class SlangFrame extends JFrame implements ActionListener {
 
     private void loadFrameSettings() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Slang Word Dictionary - Tâm Lê");
+        setTitle("Slang Word Dictionary - Tâm Lê - 20127619");
         setResizable(false);
         pack();
         setLocationRelativeTo(null);
@@ -153,13 +210,17 @@ public class SlangFrame extends JFrame implements ActionListener {
         if (source.equals(btnHistory)) {
             handleShowHistory();
         }
+
+        if (source.equals(btnRandom)) {
+            handleRandom();
+        }
     }
 
     private void handleSearch() {
         int index = cbxSearchBy.getSelectedIndex();
 
         String[][] data = null;
-        String keyword = tfKeyword.getText();
+        String keyword = tfSearch.getText();
 
         if (keyword.equals(lastSearchKeyword) && index == lastSelectedSearchByIndex) {
             return;
@@ -193,8 +254,20 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         if (result != null) {
             cbxSearchBy.setSelectedIndex(result.getKey());
-            tfKeyword.setText(result.getValue());
+            tfSearch.setText(result.getValue());
             btnSearch.doClick();
         }
+    }
+
+    private void handleRandom() {
+        btnRandom.setEnabled(false);
+        List<String[]> slang = SlangDictionary.getInstance().generateRandomSlangList(1);
+
+        tfSlangRandom.setText(slang.get(0)[0]);
+        tfSlangRandom.setCaretPosition(0);
+
+        tfDefinitionRandom.setText(slang.get(0)[1]);
+        tfDefinitionRandom.setCaretPosition(0);
+        btnRandom.setEnabled(true);
     }
 }
