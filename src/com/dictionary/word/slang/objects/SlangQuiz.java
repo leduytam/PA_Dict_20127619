@@ -32,6 +32,14 @@ public class SlangQuiz {
         return question;
     }
 
+    public String getShortQuestion(int length) {
+        if (question.length() <= length) {
+            return question;
+        }
+
+        return question.substring(0, length) + "...";
+    }
+
     // TODO: delete later
     @Override
     public String toString() {

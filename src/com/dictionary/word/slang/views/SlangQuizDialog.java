@@ -46,9 +46,11 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
     private void initComponents() {
         JPanel panelQuestion = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
 
-        lbQuestion = new JLabel(String.format("<html><h1>%s</h1></html>", quizzes.get(currentQuiz).getQuestion()));
+        lbQuestion = new JLabel(quizzes.get(currentQuiz).getShortQuestion(60));
+        lbQuestion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         lbQuestion.setForeground(Color.RED);
 
+        JScrollPane spQuestion = new JScrollPane(lbQuestion);
         panelQuestion.add(lbQuestion);
 
         JPanel panelOptions = new JPanel(new GridLayout(2, 2, 20, 20));
@@ -80,6 +82,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         panelContainer.add(panelOptions);
         panelContainer.add(Box.createRigidArea(new Dimension(0, 20)));
         panelContainer.add(panelScore);
+        panelContainer.setMinimumSize(new Dimension(600, 300));
 
         add(panelContainer);
     }
@@ -106,7 +109,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
             return;
         }
 
-        lbQuestion.setText(String.format("<html><h1>%s</h1></html>", quizzes.get(currentQuiz).getQuestion()));
+        lbQuestion.setText(quizzes.get(currentQuiz).getShortQuestion(60));
         lbCurrentQuiz.setText(String.format("Current quiz: %d/%d", currentQuiz + 1, quizzes.size()));
 
         for (int i = 0; i < btnOptions.length; i++) {
