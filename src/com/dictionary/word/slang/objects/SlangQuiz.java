@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SlangQuiz {
-    private final String question;
+    private String question;
     private final String correctOption;
     private final List<String> options;
 

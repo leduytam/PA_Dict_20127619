@@ -2,6 +2,8 @@ package com.dictionary.word.slang.views;
 
 import com.dictionary.word.slang.objects.SlangDictionary;
 import com.dictionary.word.slang.utils.Constant;
+import com.dictionary.word.slang.utils.FileIO;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -35,8 +37,6 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         initComponents();
         loadFrameSettings();
-
-        tfSearch.requestFocus();
     }
 
     private void initComponents() {
@@ -46,9 +46,39 @@ public class SlangFrame extends JFrame implements ActionListener {
         panelControls.setPreferredSize(new Dimension(400, 220));
 
         // ========================= QUIZ PANEL =========================
-        JPanel panelQuiz = new JPanel();
+        JPanel panelQuiz = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         panelQuiz.setBorder(new TitledBorder("Quizzes"));
-        panelQuiz.setPreferredSize(new Dimension(400, 220));
+
+        JButton btnQuiz = new JButton("Let's play");
+
+        JButton btnQuizStatistics = new JButton("View score statistics");
+
+        JComboBox<String> cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
+
+        Frame instance = this;
+
+        btnQuiz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SlangQuizDialog dialog = new SlangQuizDialog(instance, cbxQuiz.getSelectedIndex() == 1);
+                int score = dialog.showDialog();
+                DefaultCategoryDataset dataset = FileIO.readQuizStatistics(Constant.Path.QUIZ_STATISTICS);
+                dataset.addValue(score, "scores", String.valueOf(dataset.getRowCount() * dataset.getColumnCount() + 1));
+                FileIO.writeQuizStatistics(dataset, Constant.Path.QUIZ_STATISTICS);
+            }
+        });
+
+        btnQuizStatistics.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                SlangQuizStatisticsDialog dialog = new SlangQuizStatisticsDialog(instance);
+                dialog.showDialog();
+            }
+        });
+
+        panelQuiz.add(btnQuiz);
+        panelQuiz.add(cbxQuiz);
+        panelQuiz.add(btnQuizStatistics);
 
         // ========================= QUIZ PANEL =========================
         JPanel panelRandom = new JPanel(new GridBagLayout());

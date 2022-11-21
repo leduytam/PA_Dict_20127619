@@ -1,5 +1,7 @@
 package com.dictionary.word.slang.utils;
 
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -31,7 +33,7 @@ public class FileIO {
 
             return map;
         } catch (IOException exception) {
-            exception.printStackTrace();
+            ErrorLogger.severe(exception);
             return new TreeMap<>();
         }
     }
@@ -45,13 +47,13 @@ public class FileIO {
                 writer.newLine();
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            ErrorLogger.severe(exception);
         }
     }
 
     public static List<String> readHistory(String filePath) {
         ArrayList<String> history = new ArrayList<String>();
-        String line = null;
+        String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             while ((line = reader.readLine()) != null) {
@@ -61,9 +63,7 @@ public class FileIO {
 
                 history.add(line);
             }
-        } catch (IOException ignored) {
-            // If file not found. Do nothing
-        }
+        } catch (IOException ignored) {}
 
         return history;
     }
@@ -75,7 +75,41 @@ public class FileIO {
                 writer.newLine();
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            ErrorLogger.severe(exception);
+        }
+    }
+
+    public static DefaultCategoryDataset readQuizStatistics(String filePath) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        String line;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            int i = 1;
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
+                    continue;
+                }
+
+                try {
+                    double value = Double.parseDouble(line);
+                    dataset.addValue(value, "scores", String.valueOf(i));
+                    i++;
+                } catch (NumberFormatException ignored) {}
+            }
+        } catch (IOException ignored) {}
+
+        return dataset;
+    }
+
+    public static void writeQuizStatistics(DefaultCategoryDataset dataset, String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (int i = 0; i < dataset.getRowCount(); i++) {
+                for (int j = 0; j < dataset.getColumnCount(); j++) {
+                    writer.write(String.format("%s\n", dataset.getValue(i, j).toString()));
+                }
+            }
+        } catch (IOException exception) {
+            ErrorLogger.severe(exception);
         }
     }
 
@@ -88,8 +122,7 @@ public class FileIO {
         try {
             return new File(".").getCanonicalPath();
         } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
     }
 }

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="slang-word-dictionary:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/slang_word_dictionary_jar</output-path>
+    <root id="archive" name="slang-word-dictionary.jar">
+      <element id="module-output" name="slang-word-dictionary" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jfree/jfreechart/1.5.3/jfreechart-1.5.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

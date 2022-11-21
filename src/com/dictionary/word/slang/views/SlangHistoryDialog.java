@@ -9,12 +9,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.AbstractMap;
 
-public class SlangHistoryDialog extends JDialog {
+class SlangHistoryDialog extends JDialog {
     private AbstractMap.SimpleEntry<Integer, String> result = null;
 
-    public SlangHistoryDialog(Frame parent) {
+    SlangHistoryDialog(Frame parent) {
         super(parent, true);
+        initComponents();
+    }
 
+    private void initComponents() {
         JButton btnClear = new JButton("Clear");
         btnClear.setPreferredSize(new Dimension(90, 30));
 
