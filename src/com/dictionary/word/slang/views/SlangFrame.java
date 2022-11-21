@@ -7,6 +7,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -38,6 +39,12 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JButton btnQuizStatistics;
     private JComboBox<String> cbxQuiz;
 
+    private JTextField tfSlang;
+    private JTextField tfDefinition;
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDelete;
+
     public SlangFrame() {
         model = new DefaultTableModel(SlangDictionary.getInstance().getAll(), Constant.View.TABLE_COLUMN_NAMES);
 
@@ -51,14 +58,26 @@ public class SlangFrame extends JFrame implements ActionListener {
         panelControls.setBorder(new TitledBorder("Controls"));
         panelControls.setPreferredSize(new Dimension(400, 220));
 
+        tfSlang = new JTextField();
+
+        JLabel lbSlang = new JLabel("Slang:");
+        lbSlang.setLabelFor(tfSlang);
+
+        tfDefinition = new JTextField();
+
+        JLabel lbDefinition = new JLabel("Definition:");
+        lbDefinition.setLabelFor(lbDefinition);
+
         // ========================= QUIZ PANEL =========================
         JPanel panelQuiz = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         panelQuiz.setBorder(new TitledBorder("Quizzes"));
 
         btnQuiz = new JButton("Let's play");
+        btnQuiz.setFocusPainted(false);
         btnQuiz.addActionListener(this);
 
         btnQuizStatistics = new JButton("View score statistics");
+        btnQuizStatistics.setFocusPainted(false);
         btnQuizStatistics.addActionListener(this);
 
         cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
@@ -87,6 +106,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         lbDefinitionRandom.setLabelFor(tfDefinitionRandom);
 
         btnRandom = new JButton("Random");
+        btnRandom.setFocusPainted(false);
         btnRandom.setPreferredSize(new Dimension(100, 30));
         btnRandom.addActionListener(this);
         btnRandom.doClick();
@@ -98,9 +118,9 @@ public class SlangFrame extends JFrame implements ActionListener {
         gbcRandom.gridy = 0;
         gbcRandom.anchor = GridBagConstraints.WEST;
 
-        panelRandom.add(lbDefinitionRandom, gbcRandom);
-        gbcRandom.gridy = 1;
         panelRandom.add(lbSlangRandom, gbcRandom);
+        gbcRandom.gridy = 1;
+        panelRandom.add(lbDefinitionRandom, gbcRandom);
 
         gbcRandom.gridx = 1;
         gbcRandom.gridy = 0;
@@ -136,11 +156,11 @@ public class SlangFrame extends JFrame implements ActionListener {
         panelTable.add(spTable);
 
         // ========================= SEARCH PANEL =========================
-        JPanel searchPanel = new JPanel();
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
 
         tfSearch = new JTextField();
-        tfSearch.setColumns(25);
-        tfSearch.setPreferredSize(new Dimension(150, 30));
+        tfSearch.setColumns(30);
+        tfSearch.setPreferredSize(new Dimension(200, 30));
         tfSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -156,16 +176,21 @@ public class SlangFrame extends JFrame implements ActionListener {
         cbxSearchBy.setPreferredSize(new Dimension(90, 30));
 
         btnSearch = new JButton("Search");
+        btnSearch.setFocusPainted(false);
         btnSearch.setPreferredSize(new Dimension(90, 30));
         btnSearch.addActionListener(this);
 
         btnHistory = new JButton("History");
+        btnHistory.setFocusPainted(false);
         btnHistory.setPreferredSize(new Dimension(90, 30));
         btnHistory.addActionListener(this);
 
         searchPanel.add(tfSearch);
+        searchPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         searchPanel.add(cbxSearchBy);
+        searchPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         searchPanel.add(btnSearch);
+        searchPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         searchPanel.add(btnHistory);
 
         //  ========================= SEARCH DESCRIPTION PANEL =========================

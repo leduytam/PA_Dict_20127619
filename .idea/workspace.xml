@@ -8,11 +8,12 @@
   <component name="ChangeListManager">
     <list default="true" id="4b129966-5249-4138-8042-99687ed3a129" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/definition-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/definition-history.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/quiz-statistics.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/quiz-statistics.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/slang-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/slang-history.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangHistoryDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangHistoryDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizStatisticsDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizStatisticsDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +91,7 @@
       <workItem from="1668931163342" duration="7879000" />
       <workItem from="1668962188308" duration="7623000" />
       <workItem from="1669011243101" duration="3554000" />
-      <workItem from="1669043895032" duration="1027000" />
+      <workItem from="1669043895032" duration="3779000" />
     </task>
     <servers />
   </component>

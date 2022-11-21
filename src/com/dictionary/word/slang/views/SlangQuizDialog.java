@@ -61,6 +61,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
             btnOptions[i].setPreferredSize(new Dimension(250, 100));
             btnOptions[i].setActionCommand("check#" + i);
             btnOptions[i].addActionListener(this);
+            btnOptions[i].setFocusPainted(false);
             panelOptions.add(btnOptions[i]);
         }
 
@@ -97,7 +98,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
 
     private void loadNextQuiz() {
         for (JButton btnOption : btnOptions) {
-            btnOption.setBorder(new EmptyBorder(0, 0, 0, 0));
+            btnOption.setBorder(UIManager.getBorder("Button.border"));
         }
 
         currentQuiz++;
@@ -144,8 +145,8 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
             Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    loadNextQuiz();
                     setEnableAllButtons(true);
+                    loadNextQuiz();
                 }
             });
 
