@@ -37,8 +37,8 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
         listHistory = new JList<>(model);
         listHistory.setFixedCellHeight(30);
         listHistory.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+            public void mouseClicked(MouseEvent event) {
+                if (event.getClickCount() == 2) {
                     if (listHistory.getSelectedValue() != null) {
                         result = new AbstractMap.SimpleEntry<>(cbxHistoryBy.getSelectedIndex(), listHistory.getSelectedValue());
                         setVisible(false);
@@ -74,8 +74,8 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
+    public void actionPerformed(ActionEvent event) {
+        Object source = event.getSource();
 
         if (source.equals(btnClear)) {
             handleClearHistory();

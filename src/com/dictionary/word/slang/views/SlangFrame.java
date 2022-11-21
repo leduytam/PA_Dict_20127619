@@ -6,9 +6,8 @@ import com.dictionary.word.slang.utils.FileIO;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -16,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 import java.util.AbstractMap;
 import java.util.List;
 
@@ -31,6 +31,8 @@ public class SlangFrame extends JFrame implements ActionListener {
     private String lastSearchKeyword = "";
     private int lastSelectedSearchByIndex = 0;
 
+    private JTable table;
+
     private JButton btnRandom;
     private JTextField tfSlangRandom;
     private JTextField tfDefinitionRandom;
@@ -44,9 +46,17 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JButton btnAdd;
     private JButton btnEdit;
     private JButton btnDelete;
+    private ActionState actionState;
+
+    private enum ActionState {
+        Adding,
+        Editing,
+        None
+    }
 
     public SlangFrame() {
         model = new DefaultTableModel(SlangDictionary.getInstance().getAll(), Constant.View.TABLE_COLUMN_NAMES);
+        actionState = ActionState.None;
 
         initComponents();
         loadFrameSettings();
@@ -54,42 +64,101 @@ public class SlangFrame extends JFrame implements ActionListener {
 
     private void initComponents() {
         // ========================= CONTROLS PANEL =========================
-        JPanel panelControls = new JPanel();
-        panelControls.setBorder(new TitledBorder("Controls"));
-        panelControls.setPreferredSize(new Dimension(400, 220));
+        JPanel panelControls = new JPanel(new GridBagLayout());
+        panelControls.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Controls"),
+                BorderFactory.createEmptyBorder(10, 10, 5, 10)
+        ));
 
         tfSlang = new JTextField();
+        tfSlang.setPreferredSize(new Dimension(300, 30));
+        tfSlang.setEditable(false);
+        tfSlang.setBackground(Color.WHITE);
+
+        tfDefinition = new JTextField();
+        tfDefinition.setPreferredSize(new Dimension(300, 30));
+        tfDefinition.setEditable(false);
+        tfDefinition.setBackground(Color.WHITE);
 
         JLabel lbSlang = new JLabel("Slang:");
         lbSlang.setLabelFor(tfSlang);
 
-        tfDefinition = new JTextField();
-
         JLabel lbDefinition = new JLabel("Definition:");
         lbDefinition.setLabelFor(lbDefinition);
 
+        btnAdd = new JButton("Add");
+        btnAdd.setPreferredSize(new Dimension(90, 30));
+        btnAdd.setFocusPainted(false);
+
+        btnEdit = new JButton("Edit");
+        btnEdit.setPreferredSize(new Dimension(90, 30));
+        btnEdit.setEnabled(false);
+        btnEdit.setFocusPainted(false);
+
+        btnDelete = new JButton("Delete");
+        btnDelete.setPreferredSize(new Dimension(90, 30));
+        btnDelete.setEnabled(false);
+        btnDelete.setFocusPainted(false);
+
+        GridBagConstraints gbcControls = new GridBagConstraints();
+        gbcControls.insets = new Insets(5, 5, 5, 5);
+
+        gbcControls.gridx = 0;
+        gbcControls.gridy = 0;
+        gbcControls.anchor = GridBagConstraints.WEST;
+
+        panelControls.add(lbSlang, gbcControls);
+        gbcControls.gridy = 1;
+        panelControls.add(lbDefinition, gbcControls);
+
+        gbcControls.gridx = 1;
+        gbcControls.gridy = 0;
+        gbcControls.weightx = 1;
+        gbcControls.fill = GridBagConstraints.HORIZONTAL;
+
+        panelControls.add(tfSlang, gbcControls);
+        gbcControls.gridy = 1;
+        panelControls.add(tfDefinition, gbcControls);
+
+        JPanel panelButtonControls = new JPanel(new FlowLayout(FlowLayout.TRAILING, 0, 0));
+        panelButtonControls.add(btnAdd);
+        panelButtonControls.add(Box.createHorizontalStrut(10));
+        panelButtonControls.add(btnEdit);
+        panelButtonControls.add(Box.createHorizontalStrut(10));
+        panelButtonControls.add(btnDelete);
+
+        gbcControls.gridx = 0;
+        gbcControls.gridy = 2;
+        gbcControls.gridwidth = 2;
+        panelControls.add(panelButtonControls, gbcControls);
+
         // ========================= QUIZ PANEL =========================
-        JPanel panelQuiz = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        panelQuiz.setBorder(new TitledBorder("Quizzes"));
+        JPanel panelQuiz = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
+        panelQuiz.setBorder(BorderFactory.createTitledBorder("Quizzes"));
 
         btnQuiz = new JButton("Let's play");
         btnQuiz.setFocusPainted(false);
         btnQuiz.addActionListener(this);
+        btnQuiz.setPreferredSize(new Dimension(110, 30));
+
+        cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
+        cbxQuiz.setPreferredSize(new Dimension(90, 30));
 
         btnQuizStatistics = new JButton("View score statistics");
         btnQuizStatistics.setFocusPainted(false);
         btnQuizStatistics.addActionListener(this);
-
-        cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
+        btnQuizStatistics.setPreferredSize(new Dimension(200, 30));
 
         panelQuiz.add(btnQuiz);
         panelQuiz.add(cbxQuiz);
         panelQuiz.add(btnQuizStatistics);
 
-        // ========================= QUIZ PANEL =========================
+        // ========================= RANDOM PANEL =========================
         JPanel panelRandom = new JPanel(new GridBagLayout());
-        panelRandom.setBorder(new TitledBorder("Did you know?"));
-//        panelRandom.setPreferredSize(new Dimension(400, 220));
+        panelRandom.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Did you know?"),
+                BorderFactory.createEmptyBorder(10, 10, 5, 10)
+        ));
 
         JLabel lbSlangRandom = new JLabel("Slang: ");
         JLabel lbDefinitionRandom = new JLabel("Definition: ");
@@ -97,10 +166,12 @@ public class SlangFrame extends JFrame implements ActionListener {
         tfSlangRandom = new JTextField();
         tfSlangRandom.setPreferredSize(new Dimension(300, 30));
         tfSlangRandom.setEditable(false);
+        tfSlangRandom.setBackground(Color.WHITE);
 
         tfDefinitionRandom = new JTextField();
         tfDefinitionRandom.setPreferredSize(new Dimension(300, 30));
         tfDefinitionRandom.setEditable(false);
+        tfDefinitionRandom.setBackground(Color.WHITE);
 
         lbSlangRandom.setLabelFor(tfSlangRandom);
         lbDefinitionRandom.setLabelFor(tfDefinitionRandom);
@@ -140,7 +211,15 @@ public class SlangFrame extends JFrame implements ActionListener {
         // ========================= TABLE PANEL =========================
         JPanel panelTable = new JPanel(new GridLayout());
 
-        JTable table = new JTable(model);
+        table = new JTable(model) {
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            };
+        };
         table.setRowHeight(30);
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(JLabel.CENTER);
@@ -149,9 +228,13 @@ public class SlangFrame extends JFrame implements ActionListener {
         table.getColumnModel().getColumn(1).setPreferredWidth(120);
         table.getColumnModel().getColumn(2).setPreferredWidth(400);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        table.getTableHeader().setFont(new Font(new JLabel().getFont().getFontName(), Font.PLAIN, 14));
+        table.getTableHeader().setEnabled(false);
+        table.getSelectionModel().addListSelectionListener(this::handleSelectRowTable);
 
         JScrollPane spTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         spTable.setPreferredSize(new Dimension(600, 590));
+        table.getTableHeader().setPreferredSize(new Dimension(spTable.getHeight(), 30));
 
         panelTable.add(spTable);
 
@@ -163,10 +246,10 @@ public class SlangFrame extends JFrame implements ActionListener {
         tfSearch.setPreferredSize(new Dimension(200, 30));
         tfSearch.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
+            public void keyPressed(KeyEvent event) {
+                super.keyPressed(event);
 
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (event.getKeyCode() == KeyEvent.VK_ENTER) {
                     handleSearch();
                 }
             }
@@ -208,7 +291,9 @@ public class SlangFrame extends JFrame implements ActionListener {
         JPanel panelLeft = new JPanel();
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
         panelLeft.add(panelControls);
+        panelLeft.add(Box.createVerticalStrut(20));
         panelLeft.add(panelQuiz);
+        panelLeft.add(Box.createVerticalStrut(20));
         panelLeft.add(panelRandom);
 
         // ========================= RIGHT PANEL =========================
@@ -220,7 +305,7 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         // ========================= CONTAINER PANEL =========================
         JPanel panelContainer = new JPanel(new GridBagLayout());
-        panelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.weighty = 1;
         gbc.anchor = GridBagConstraints.PAGE_START;
@@ -233,6 +318,15 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     private void loadFrameSettings() {
+        try {
+            for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ignored) {}
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Slang Word Dictionary - Tâm Lê - 20127619");
         setResizable(false);
@@ -242,8 +336,8 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
+    public void actionPerformed(ActionEvent event) {
+        Object source = event.getSource();
 
         if (source.equals(btnSearch)) {
             handleSearch();
@@ -264,6 +358,22 @@ public class SlangFrame extends JFrame implements ActionListener {
         if (source.equals(btnQuizStatistics)) {
             handleShowQuizStatistics();
         }
+    }
+
+    private void handleSelectRowTable(ListSelectionEvent event) {
+        if (table.getSelectedRow() == -1 || event.getValueIsAdjusting()) {
+            return;
+        }
+
+        int row = table.getSelectedRow();
+
+        tfSlang.setText(model.getValueAt(row, 1).toString());
+        tfSlang.setCaretPosition(0);
+
+        tfDefinition.setText(model.getValueAt(row, 2).toString());
+        tfDefinition.setCaretPosition(0);
+
+        btnEdit.setEnabled(true);
     }
 
     private void handleSearch() {
@@ -310,7 +420,6 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     private void handleShowRandomSlang() {
-        btnRandom.setEnabled(false);
         List<String[]> slang = SlangDictionary.getInstance().generateRandomSlangList(1);
 
         tfSlangRandom.setText(slang.get(0)[0]);
@@ -318,7 +427,6 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         tfDefinitionRandom.setText(slang.get(0)[1]);
         tfDefinitionRandom.setCaretPosition(0);
-        btnRandom.setEnabled(true);
     }
 
     private void handleShowQuizGame() {

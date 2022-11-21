@@ -33,7 +33,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(WindowEvent event) {
                 int choice = JOptionPane.showConfirmDialog(me, "Are you sure you want to quit?", "Warning", JOptionPane.YES_NO_OPTION);
 
                 if (choice == JOptionPane.YES_OPTION) {
@@ -133,8 +133,8 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        String command = actionEvent.getActionCommand();
+    public void actionPerformed(ActionEvent event) {
+        String command = event.getActionCommand();
 
         if (command.startsWith("check#")) {
             setEnableAllButtons(false);
@@ -144,7 +144,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
 
             Timer timer = new Timer(1000, new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
+                public void actionPerformed(ActionEvent event) {
                     setEnableAllButtons(true);
                     loadNextQuiz();
                 }
