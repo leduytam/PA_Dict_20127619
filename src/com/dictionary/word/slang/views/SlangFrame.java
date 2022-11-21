@@ -20,6 +20,7 @@ import java.util.List;
 
 public class SlangFrame extends JFrame implements ActionListener {
     private final DefaultTableModel model;
+
     private JTextField tfSearch;
     private JComboBox<String> cbxSearchBy;
     private JButton btnSearch;
@@ -28,9 +29,14 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JLabel lbSearchResultsCount;
     private String lastSearchKeyword = "";
     private int lastSelectedSearchByIndex = 0;
+
     private JButton btnRandom;
     private JTextField tfSlangRandom;
     private JTextField tfDefinitionRandom;
+
+    private JButton btnQuiz;
+    private JButton btnQuizStatistics;
+    private JComboBox<String> cbxQuiz;
 
     public SlangFrame() {
         model = new DefaultTableModel(SlangDictionary.getInstance().getAll(), Constant.View.TABLE_COLUMN_NAMES);
@@ -49,32 +55,13 @@ public class SlangFrame extends JFrame implements ActionListener {
         JPanel panelQuiz = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         panelQuiz.setBorder(new TitledBorder("Quizzes"));
 
-        JButton btnQuiz = new JButton("Let's play");
+        btnQuiz = new JButton("Let's play");
+        btnQuiz.addActionListener(this);
 
-        JButton btnQuizStatistics = new JButton("View score statistics");
+        btnQuizStatistics = new JButton("View score statistics");
+        btnQuizStatistics.addActionListener(this);
 
-        JComboBox<String> cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
-
-        Frame instance = this;
-
-        btnQuiz.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                SlangQuizDialog dialog = new SlangQuizDialog(instance, cbxQuiz.getSelectedIndex() == 1);
-                int score = dialog.showDialog();
-                DefaultCategoryDataset dataset = FileIO.readQuizStatistics(Constant.Path.QUIZ_STATISTICS);
-                dataset.addValue(score, "scores", String.valueOf(dataset.getRowCount() * dataset.getColumnCount() + 1));
-                FileIO.writeQuizStatistics(dataset, Constant.Path.QUIZ_STATISTICS);
-            }
-        });
-
-        btnQuizStatistics.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                SlangQuizStatisticsDialog dialog = new SlangQuizStatisticsDialog(instance);
-                dialog.showDialog();
-            }
-        });
+        cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
 
         panelQuiz.add(btnQuiz);
         panelQuiz.add(cbxQuiz);
@@ -242,7 +229,15 @@ public class SlangFrame extends JFrame implements ActionListener {
         }
 
         if (source.equals(btnRandom)) {
-            handleRandom();
+            handleShowRandomSlang();
+        }
+
+        if (source.equals(btnQuiz)) {
+            handleShowQuizGame();
+        }
+
+        if (source.equals(btnQuizStatistics)) {
+            handleShowQuizStatistics();
         }
     }
 
@@ -289,7 +284,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void handleRandom() {
+    private void handleShowRandomSlang() {
         btnRandom.setEnabled(false);
         List<String[]> slang = SlangDictionary.getInstance().generateRandomSlangList(1);
 
@@ -299,5 +294,18 @@ public class SlangFrame extends JFrame implements ActionListener {
         tfDefinitionRandom.setText(slang.get(0)[1]);
         tfDefinitionRandom.setCaretPosition(0);
         btnRandom.setEnabled(true);
+    }
+
+    private void handleShowQuizGame() {
+        SlangQuizDialog dialog = new SlangQuizDialog(this, cbxQuiz.getSelectedIndex() == 1);
+        int score = dialog.showDialog();
+        DefaultCategoryDataset dataset = FileIO.readQuizStatistics(Constant.Path.QUIZ_STATISTICS);
+        dataset.addValue(score, "scores", String.valueOf(dataset.getRowCount() * dataset.getColumnCount() + 1));
+        FileIO.writeQuizStatistics(dataset, Constant.Path.QUIZ_STATISTICS);
+    }
+
+    private void handleShowQuizStatistics() {
+        SlangQuizStatisticsDialog dialog = new SlangQuizStatisticsDialog(this);
+        dialog.showDialog();
     }
 }

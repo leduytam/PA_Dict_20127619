@@ -64,7 +64,6 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
             panelOptions.add(btnOptions[i]);
         }
 
-
         JPanel panelScore = new JPanel();
 
         lbScore = new JLabel("Current score: 0");
@@ -82,7 +81,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         panelContainer.add(panelOptions);
         panelContainer.add(Box.createRigidArea(new Dimension(0, 20)));
         panelContainer.add(panelScore);
-        panelContainer.setMinimumSize(new Dimension(600, 300));
+        panelContainer.setPreferredSize(new Dimension(600, 400));
 
         add(panelContainer);
     }

@@ -28,9 +28,12 @@ public class SlangQuizStatisticsDialog extends JDialog {
 
         lineChart.removeLegend();
 
-        ChartPanel panel = new ChartPanel(lineChart);
-        panel.setPreferredSize(new Dimension(800, 500));
-        setContentPane(panel);
+        ChartPanel chartPanel = new ChartPanel(lineChart);
+        chartPanel.setPreferredSize(new Dimension(800, 500));
+        chartPanel.setMouseZoomable(true, false);
+        chartPanel.setMouseWheelEnabled(true);
+
+        setContentPane(chartPanel);
     }
 
     public void showDialog() {
