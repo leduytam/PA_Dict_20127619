@@ -7,7 +7,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -47,6 +46,8 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JButton btnEdit;
     private JButton btnDelete;
     private ActionState actionState;
+
+    private JButton btnRestoreDefault;
 
     private enum ActionState {
         Adding,
@@ -89,16 +90,19 @@ public class SlangFrame extends JFrame implements ActionListener {
         btnAdd = new JButton("Add");
         btnAdd.setPreferredSize(new Dimension(90, 30));
         btnAdd.setFocusPainted(false);
+        btnAdd.addActionListener(this);
 
         btnEdit = new JButton("Edit");
         btnEdit.setPreferredSize(new Dimension(90, 30));
         btnEdit.setEnabled(false);
         btnEdit.setFocusPainted(false);
+        btnEdit.addActionListener(this);
 
         btnDelete = new JButton("Delete");
         btnDelete.setPreferredSize(new Dimension(90, 30));
         btnDelete.setEnabled(false);
         btnDelete.setFocusPainted(false);
+        btnDelete.addActionListener(this);
 
         GridBagConstraints gbcControls = new GridBagConstraints();
         gbcControls.insets = new Insets(5, 5, 5, 5);
@@ -218,7 +222,9 @@ public class SlangFrame extends JFrame implements ActionListener {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
-            };
+            }
+
+            ;
         };
         table.setRowHeight(30);
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
@@ -233,7 +239,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         table.getSelectionModel().addListSelectionListener(this::handleSelectRowTable);
 
         JScrollPane spTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        spTable.setPreferredSize(new Dimension(600, 590));
+        spTable.setPreferredSize(new Dimension(600, 600));
         table.getTableHeader().setPreferredSize(new Dimension(spTable.getHeight(), 30));
 
         panelTable.add(spTable);
@@ -290,11 +296,20 @@ public class SlangFrame extends JFrame implements ActionListener {
         // ========================= LEFT PANEL =========================
         JPanel panelLeft = new JPanel();
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
+
+        btnRestoreDefault = new JButton("Restore to default");
+        btnRestoreDefault.addActionListener(this);
+        btnRestoreDefault.setFocusPainted(false);
+        btnRestoreDefault.setPreferredSize(new Dimension(150, 30));
+        btnRestoreDefault.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         panelLeft.add(panelControls);
         panelLeft.add(Box.createVerticalStrut(20));
         panelLeft.add(panelQuiz);
         panelLeft.add(Box.createVerticalStrut(20));
         panelLeft.add(panelRandom);
+        panelLeft.add(Box.createVerticalStrut(148));
+        panelLeft.add(btnRestoreDefault);
 
         // ========================= RIGHT PANEL =========================
         JPanel panelRight = new JPanel(new BorderLayout());
@@ -325,7 +340,8 @@ public class SlangFrame extends JFrame implements ActionListener {
                     break;
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Slang Word Dictionary - Tâm Lê - 20127619");
@@ -358,6 +374,22 @@ public class SlangFrame extends JFrame implements ActionListener {
         if (source.equals(btnQuizStatistics)) {
             handleShowQuizStatistics();
         }
+
+        if (source.equals(btnAdd)) {
+            handleAdd();
+        }
+
+        if (source.equals(btnEdit)) {
+            handleEdit();
+        }
+
+        if (source.equals(btnDelete)) {
+            handleDelete();
+        }
+
+        if (source.equals(btnRestoreDefault)) {
+            handleRestoreDefault();
+        }
     }
 
     private void handleSelectRowTable(ListSelectionEvent event) {
@@ -374,6 +406,32 @@ public class SlangFrame extends JFrame implements ActionListener {
         tfDefinition.setCaretPosition(0);
 
         btnEdit.setEnabled(true);
+    }
+
+    private void handleAdd() {
+
+    }
+
+    private void handleEdit() {
+
+    }
+
+    private void handleDelete() {
+
+    }
+
+    private void handleRestoreDefault() {
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to restore data to default?", "Warning", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_NO_OPTION) {
+            SlangDictionary.getInstance().reset();
+            String[][] data = SlangDictionary.getInstance().getAll();
+
+            model.setRowCount(0);
+            for (String[] row : data) {
+                model.addRow(row);
+            }
+        }
     }
 
     private void handleSearch() {

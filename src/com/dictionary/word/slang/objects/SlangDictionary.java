@@ -8,7 +8,7 @@ import java.util.*;
 
 public class SlangDictionary {
     private static SlangDictionary instance;
-    private final SortedMap<String, List<String>> slangMap;
+    private SortedMap<String, List<String>> slangMap;
 
     private SlangDictionary() {
         if (FileIO.isExists(Constant.Path.SLANG_DICTIONARY)) {
@@ -85,6 +85,10 @@ public class SlangDictionary {
         }
 
         return results.toArray(String[][]::new);
+    }
+
+    public void reset() {
+        slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
     }
 
     private static void addEntryToList(List<String[]> lst, Map.Entry<String, List<String>> entry) {
