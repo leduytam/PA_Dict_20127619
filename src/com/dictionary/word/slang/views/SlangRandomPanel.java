@@ -82,6 +82,10 @@ public class SlangRandomPanel extends JPanel implements ActionListener {
         if (source.equals(btnRandom)) {
             List<String[]> slang = SlangDictionary.getInstance().generateRandomSlangList(1);
 
+            if (slang == null) {
+                return;
+            }
+
             tfSlang.setText(slang.get(0)[0]);
             tfSlang.setCaretPosition(0);
 

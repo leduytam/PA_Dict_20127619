@@ -7,12 +7,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b129966-5249-4138-8042-99687ed3a129" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/definition-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/definition-history.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/scores.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/scores.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/slang-dictionary.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/slang-dictionary.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/slang-history.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/slang-history.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangDictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangDictionary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangQuiz.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangQuiz.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/ErrorLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/ErrorLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizStatisticsDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizScoresDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangRandomPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangRandomPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,24 +52,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tamle/projects/java-projects/slang-word-dictionary/data&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "true",
+    "Repository.Attach.Sources": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/tamle/projects/java-projects/slang-word-dictionary/out/production/slang-word-dictionary",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/out/production/slang-word-dictionary" />
+      <recent name="$PROJECT_DIR$/out/artifacts/slang_word_dictionary_jar" />
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
@@ -93,7 +105,7 @@
       <workItem from="1669043895032" duration="9220000" />
       <workItem from="1669054085157" duration="1856000" />
       <workItem from="1669106831218" duration="5988000" />
-      <workItem from="1669123774335" duration="5319000" />
+      <workItem from="1669123774335" duration="15200000" />
     </task>
     <servers />
   </component>

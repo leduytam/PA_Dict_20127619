@@ -11,7 +11,6 @@ import java.awt.event.*;
 import java.util.List;
 
 public class SlangQuizDialog extends JDialog implements ActionListener {
-    private final SlangQuizDialog me;
     private int score;
     private final List<SlangQuiz> quizzes;
     private int currentQuiz;
@@ -23,7 +22,6 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
     SlangQuizDialog(boolean isReverse) {
         setModal(true);
 
-        me = this;
         quizzes = SlangDictionary.getInstance().generateRandomQuizzes(10, isReverse);
         score = 0;
         currentQuiz = 0;
@@ -34,10 +32,10 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
-                int choice = JOptionPane.showConfirmDialog(me, "Are you sure you want to quit?", "Warning", JOptionPane.YES_NO_OPTION);
+                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Warning", JOptionPane.YES_NO_OPTION);
 
                 if (choice == JOptionPane.YES_OPTION) {
-                    me.dispose();
+                    dispose();
                 }
             }
         });
@@ -50,7 +48,6 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         lbQuestion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         lbQuestion.setForeground(Color.RED);
 
-        JScrollPane spQuestion = new JScrollPane(lbQuestion);
         panelQuestion.add(lbQuestion);
 
         JPanel panelOptions = new JPanel(new GridLayout(2, 2, 20, 20));
@@ -104,7 +101,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         currentQuiz++;
 
         if (currentQuiz == quizzes.size()) {
-            JOptionPane.showMessageDialog(me, String.format("Congratulation! Your score is: %d", score));
+            JOptionPane.showMessageDialog(null, String.format("Congratulation! Your score is: %d", score));
             setVisible(false);
             return;
         }
@@ -142,12 +139,9 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
 
             checkAnswer(index);
 
-            Timer timer = new Timer(1000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    setEnableAllButtons(true);
-                    loadNextQuiz();
-                }
+            Timer timer = new Timer(1000, e -> {
+                setEnableAllButtons(true);
+                loadNextQuiz();
             });
 
             timer.setRepeats(false);

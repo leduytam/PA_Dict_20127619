@@ -4,6 +4,7 @@ import com.dictionary.word.slang.utils.Constant;
 import com.dictionary.word.slang.utils.FileIO;
 import com.dictionary.word.slang.utils.Generator;
 
+import javax.swing.*;
 import java.util.*;
 
 public class SlangDictionary {
@@ -11,12 +12,7 @@ public class SlangDictionary {
     private SortedMap<String, List<String>> slangMap;
 
     private SlangDictionary() {
-        if (FileIO.isExists(Constant.Path.SLANG_DICTIONARY)) {
-            slangMap = FileIO.readMap(Constant.Path.SLANG_DICTIONARY);
-        } else {
-            slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
-            saveToFile();
-        }
+        loadData();
     }
 
     public static synchronized SlangDictionary getInstance() {
@@ -25,6 +21,29 @@ public class SlangDictionary {
         }
 
         return instance;
+    }
+
+    private void loadData() {
+        FileIO.tryToCreateDirectory(Constant.Path.DATA_DIRECTORY);
+
+        if (FileIO.isFileExists(Constant.Path.SLANG_DICTIONARY)) {
+            slangMap = FileIO.readMap(Constant.Path.SLANG_DICTIONARY);
+        } else if (FileIO.isFileExists(Constant.Path.BASE_SLANG_DICTIONARY)) {
+            slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
+            FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+        } else {
+            String message = "No database found!!!\n" +
+                    "Please add your database with name base-slang-dictionary.dat\n" +
+                    "To path: " +
+                    Constant.Path.DATA_DIRECTORY;
+            JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+
+            System.exit(1);
+        }
+    }
+
+    public int getUniqueSize() {
+        return slangMap.size();
     }
 
     public String[][] getAll() {
@@ -50,7 +69,7 @@ public class SlangDictionary {
 
         definitions.add(definition);
         slangMap.put(slang, definitions);
-        saveToFile();
+        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
     public void addOverwrite(String slang, String definition) {
@@ -67,29 +86,27 @@ public class SlangDictionary {
         definitions.clear();
         definitions.add(definition);
         slangMap.put(slang, definitions);
-        saveToFile();
+        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
     public boolean isExists(String slang) {
         return slangMap.get(slang) != null;
     }
 
-    public boolean set(String slang, String definition, int definitionIndex) {
+    public void set(String slang, String definition, int definitionIndex) {
         if (slang.isBlank() || definition.isBlank()) {
-            return false;
+            return;
         }
 
         List<String> definitions = slangMap.get(slang);
 
         if (definitions == null || definitionIndex < 0 || definitionIndex >= definitions.size()) {
-            return false;
+            return;
         }
 
         definitions.set(definitionIndex, definition);
         slangMap.put(slang, definitions);
-        saveToFile();
-
-        return true;
+        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
     public boolean remove(String slang, int definitionIndex) {
@@ -105,13 +122,9 @@ public class SlangDictionary {
 
         definitions.remove(definitionIndex);
         slangMap.put(slang, definitions);
-        saveToFile();
+        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
 
         return true;
-    }
-
-    private void saveToFile() {
-        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
     public String[][] searchBySlang(String slang) {
@@ -124,7 +137,7 @@ public class SlangDictionary {
         char nextLastChar = (char) (slang.charAt(slang.length() - 1) + 1);
         String end = slang.substring(0, slang.length() - 1) + nextLastChar;
         SortedMap<String, List<String>> resultsMap = slangMap.subMap(slang, end);
-        ArrayList<String[]> results = new ArrayList<String[]>();
+        ArrayList<String[]> results = new ArrayList<>();
 
         for (Map.Entry<String, List<String>> entry : resultsMap.entrySet()) {
             addEntryToList(results, entry);
@@ -140,7 +153,7 @@ public class SlangDictionary {
 
         SlangHistory.getInstance().addDefinition(definition);
 
-        ArrayList<String[]> results = new ArrayList<String[]>();
+        ArrayList<String[]> results = new ArrayList<>();
 
         for (Map.Entry<String, List<String>> entry : slangMap.entrySet()) {
             int indexOfDefinition = 0;
@@ -162,7 +175,7 @@ public class SlangDictionary {
 
     public void reset() {
         slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
-        saveToFile();
+        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
     private static void addEntryToList(List<String[]> lst, Map.Entry<String, List<String>> entry) {
@@ -180,11 +193,11 @@ public class SlangDictionary {
     }
 
     public List<String[]> generateRandomSlangList(int size) {
-        if (size <= 0) {
-            return new ArrayList<>();
+        if (size <= 0 || size > slangMap.size()) {
+            return null;
         }
 
-        ArrayList<String[]> results = new ArrayList<String[]>();
+        ArrayList<String[]> results = new ArrayList<>();
         List<Integer> indices = Generator.randDistinctIntArray(0, slangMap.size() - 1, size);
 
         int i = 0;
@@ -220,8 +233,13 @@ public class SlangDictionary {
         }
 
         List<String[]> randomSlangList = generateRandomSlangList(size * 4);
-        ArrayList<String> randomOptions = new ArrayList<String>();
-        ArrayList<SlangQuiz> quizzes = new ArrayList<SlangQuiz>();
+
+        if (randomSlangList == null) {
+            return null;
+        }
+
+        ArrayList<String> randomOptions = new ArrayList<>();
+        ArrayList<SlangQuiz> quizzes = new ArrayList<>();
 
         for (String[] slang : randomSlangList) {
             randomOptions.add(slang[optionIndex]);

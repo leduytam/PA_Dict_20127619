@@ -18,7 +18,6 @@ public class ErrorLogger {
 
             logger = Logger.getLogger(ErrorLogger.class.getName());
             logger.addHandler(fileHandler);
-//            logger.setUseParentHandlers(false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

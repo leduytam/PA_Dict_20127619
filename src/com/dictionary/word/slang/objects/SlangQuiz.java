@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SlangQuiz {
-    private String question;
+    private final String question;
     private final String correctOption;
     private final List<String> options;
 
@@ -13,7 +13,7 @@ public class SlangQuiz {
         this.question = question;
         this.correctOption = correctOption;
 
-        options = new ArrayList<String>();
+        options = new ArrayList<>();
         options.add(correctOption);
         options.addAll(incorrectOptions);
 
@@ -38,27 +38,5 @@ public class SlangQuiz {
         }
 
         return question.substring(0, length) + "...";
-    }
-
-    // TODO: delete later
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Question: ");
-        sb.append(question);
-        sb.append("\n");
-
-        for (int i = 0; i < options.size(); i++) {
-            sb.append(i + 1);
-            sb.append(". ");
-            sb.append(options.get(i));
-            sb.append("\n");
-        }
-
-        sb.append("Correct option: ");
-        sb.append(correctOption);
-
-        return sb.toString();
     }
 }

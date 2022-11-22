@@ -6,8 +6,8 @@ import java.util.List;
 
 public class FileIO {
     public static SortedMap<String, List<String>> readMap(String filePath) {
-        TreeMap<String, List<String>> map = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
-        String line = null;
+        TreeMap<String, List<String>> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             while ((line = reader.readLine()) != null) {
@@ -32,7 +32,7 @@ public class FileIO {
             return map;
         } catch (IOException exception) {
             ErrorLogger.severe(exception);
-            return new TreeMap<>();
+            return null;
         }
     }
 
@@ -50,7 +50,7 @@ public class FileIO {
     }
 
     public static List<String> readHistory(String filePath) {
-        ArrayList<String> history = new ArrayList<String>();
+        ArrayList<String> history = new ArrayList<>();
         String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -107,13 +107,25 @@ public class FileIO {
         }
     }
 
-    public static boolean isExists(String filePath) {
+    public static boolean isFileExists(String filePath) {
         File file = new File(filePath);
         return file.exists() && !file.isDirectory();
     }
 
+    public static void tryToCreateDirectory(String directoryPath) {
+        File dir = new File(directoryPath);
+
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+    }
+
     public static String getCurrentDirectoryPath() {
         try {
+            // use this line when build artifact
+            // return new File(FileIO.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getPath();
+
+            // use this line when run or debug
             return new File(".").getCanonicalPath();
         } catch (Exception exception) {
             throw new RuntimeException();

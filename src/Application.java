@@ -1,3 +1,4 @@
+import com.dictionary.word.slang.utils.ErrorLogger;
 import com.dictionary.word.slang.views.SlangFrame;
 
 public class Application implements Runnable {
@@ -7,6 +8,10 @@ public class Application implements Runnable {
 
     @Override
     public void run() {
-        new SlangFrame();
+        try {
+            new SlangFrame();
+        } catch (Exception exception) {
+            ErrorLogger.severe(exception);
+        }
     }
 }

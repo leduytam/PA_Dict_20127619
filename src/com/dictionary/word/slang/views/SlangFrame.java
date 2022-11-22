@@ -37,12 +37,6 @@ public class SlangFrame extends JFrame implements ActionListener {
 
     private JButton btnRestoreDefault;
 
-    private enum ActionState {
-        Adding,
-        Editing,
-        None
-    }
-
     public SlangFrame() {
         model = new DefaultTableModel(SlangDictionary.getInstance().getAll(), Constant.View.TABLE_COLUMN_NAMES);
         actionState = ActionState.None;
@@ -54,10 +48,7 @@ public class SlangFrame extends JFrame implements ActionListener {
     private void initComponents() {
         // ========================= CONTROLS PANEL =========================
         JPanel panelControls = new JPanel(new GridBagLayout());
-        panelControls.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Controls"),
-                BorderFactory.createEmptyBorder(10, 10, 5, 10)
-        ));
+        panelControls.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Controls"), BorderFactory.createEmptyBorder(10, 10, 5, 10)));
 
         tfSlang = new JTextField();
         tfSlang.setPreferredSize(new Dimension(300, 30));
@@ -516,5 +507,9 @@ public class SlangFrame extends JFrame implements ActionListener {
         for (String[] row : data) {
             model.addRow(row);
         }
+    }
+
+    private enum ActionState {
+        Adding, Editing, None
     }
 }
