@@ -3,7 +3,6 @@ package com.dictionary.word.slang.views;
 import com.dictionary.word.slang.objects.SlangDictionary;
 import com.dictionary.word.slang.utils.Constant;
 import com.dictionary.word.slang.utils.FileIO;
-import org.jfree.data.xy.XYSeries;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -27,8 +26,6 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JButton btnHistory;
     private JLabel lbSearchTime;
     private JLabel lbSearchResultsCount;
-    private String lastSearchKeyword = "";
-    private int lastSelectedSearchByIndex = 0;
 
     private JTable table;
 
@@ -232,8 +229,6 @@ public class SlangFrame extends JFrame implements ActionListener {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-
-            ;
         };
         table.setRowHeight(30);
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
@@ -274,16 +269,16 @@ public class SlangFrame extends JFrame implements ActionListener {
         });
 
         cbxSearchBy = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
-        cbxSearchBy.setPreferredSize(new Dimension(90, 30));
+        cbxSearchBy.setPreferredSize(new Dimension(100, 30));
 
         btnSearch = new JButton("Search");
         btnSearch.setFocusPainted(false);
-        btnSearch.setPreferredSize(new Dimension(90, 30));
+        btnSearch.setPreferredSize(new Dimension(100, 30));
         btnSearch.addActionListener(this);
 
         btnHistory = new JButton("History");
         btnHistory.setFocusPainted(false);
-        btnHistory.setPreferredSize(new Dimension(90, 30));
+        btnHistory.setPreferredSize(new Dimension(100, 30));
         btnHistory.addActionListener(this);
 
         searchPanel.add(tfSearch);
@@ -409,7 +404,12 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     private void handleSelectRowTable(ListSelectionEvent event) {
-        if (table.getSelectedRow() == -1 || event.getValueIsAdjusting()) {
+        if (event.getValueIsAdjusting()) {
+            return;
+        }
+
+        if (table.getSelectedRow() == -1) {
+            setDefaultState();
             return;
         }
 
@@ -583,13 +583,6 @@ public class SlangFrame extends JFrame implements ActionListener {
         String[][] data = null;
         String keyword = tfSearch.getText();
 
-        if (keyword.equals(lastSearchKeyword) && index == lastSelectedSearchByIndex) {
-            return;
-        }
-
-        lastSearchKeyword = keyword;
-        lastSelectedSearchByIndex = index;
-
         long start = System.currentTimeMillis();
 
         if (index == 0) {
@@ -641,7 +634,6 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     private void reloadModel(String[][] data) {
-        lastSearchKeyword = "";
         model.setRowCount(0);
         for (String[] row : data) {
             model.addRow(row);
