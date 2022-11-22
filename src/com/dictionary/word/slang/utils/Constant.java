@@ -11,7 +11,7 @@ public class Constant {
         public static final String SLANG_HISTORY = String.format("%s/data/slang-history.dat", CURRENT_DIRECTORY);
         public static final String DEFINITION_HISTORY = String.format("%s/data/definition-history.dat", CURRENT_DIRECTORY);
 
-        public static final String QUIZ_STATISTICS = String.format("%s/data/quiz-statistics.dat", CURRENT_DIRECTORY);
+        public static final String SCORES = String.format("%s/data/scores.dat", CURRENT_DIRECTORY);
     }
 
     public static class Regex {

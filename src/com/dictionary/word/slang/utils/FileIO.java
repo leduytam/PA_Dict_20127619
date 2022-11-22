@@ -1,7 +1,5 @@
 package com.dictionary.word.slang.utils;
 
-import org.jfree.data.category.DefaultCategoryDataset;
-
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -79,34 +77,30 @@ public class FileIO {
         }
     }
 
-    public static DefaultCategoryDataset readQuizStatistics(String filePath) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    public static List<Integer> readScores(String filePath) {
+        List<Integer> scores = new ArrayList<>();
         String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            int i = 1;
             while ((line = reader.readLine()) != null) {
                 if (line.isBlank()) {
                     continue;
                 }
 
                 try {
-                    double value = Double.parseDouble(line);
-                    dataset.addValue(value, "scores", String.valueOf(i));
-                    i++;
+                    scores.add(Integer.parseInt(line));
                 } catch (NumberFormatException ignored) {}
             }
         } catch (IOException ignored) {}
 
-        return dataset;
+        return scores;
     }
 
-    public static void writeQuizStatistics(DefaultCategoryDataset dataset, String filePath) {
+    public static void writeScores(List<Integer> scores, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (int i = 0; i < dataset.getRowCount(); i++) {
-                for (int j = 0; j < dataset.getColumnCount(); j++) {
-                    writer.write(String.format("%s\n", dataset.getValue(i, j).toString()));
-                }
+            for (Integer score : scores) {
+                writer.write(score.toString());
+                writer.newLine();
             }
         } catch (IOException exception) {
             ErrorLogger.severe(exception);

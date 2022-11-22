@@ -3,7 +3,7 @@ package com.dictionary.word.slang.views;
 import com.dictionary.word.slang.objects.SlangDictionary;
 import com.dictionary.word.slang.utils.Constant;
 import com.dictionary.word.slang.utils.FileIO;
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -630,9 +630,9 @@ public class SlangFrame extends JFrame implements ActionListener {
     private void handleShowQuizGame() {
         SlangQuizDialog dialog = new SlangQuizDialog(this, cbxQuiz.getSelectedIndex() == 1);
         int score = dialog.showDialog();
-        DefaultCategoryDataset dataset = FileIO.readQuizStatistics(Constant.Path.QUIZ_STATISTICS);
-        dataset.addValue(score, "scores", String.valueOf(dataset.getRowCount() * dataset.getColumnCount() + 1));
-        FileIO.writeQuizStatistics(dataset, Constant.Path.QUIZ_STATISTICS);
+        List<Integer> scores = FileIO.readScores(Constant.Path.SCORES);
+        scores.add(score);
+        FileIO.writeScores(scores, Constant.Path.SCORES);
     }
 
     private void handleShowQuizStatistics() {
