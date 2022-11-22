@@ -21,8 +21,7 @@ public class Constant {
     }
 
     public static class View {
-        public static final String[] TABLE_COLUMN_NAMES = {"#", "Slang", "Definition"};
+        public static final String[] TABLE_COLUMN_NAMES = {"#", "Slang", "Definition", "Definition Index"};
         public static final String[] SEARCH_BY_VALUES = {"Slang", "Definition"};
-
     }
 }

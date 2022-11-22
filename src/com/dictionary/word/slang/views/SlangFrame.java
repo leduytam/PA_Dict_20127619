@@ -45,6 +45,7 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JButton btnAdd;
     private JButton btnEdit;
     private JButton btnDelete;
+    private JButton btnCancel;
     private ActionState actionState;
 
     private JButton btnRestoreDefault;
@@ -104,6 +105,12 @@ public class SlangFrame extends JFrame implements ActionListener {
         btnDelete.setFocusPainted(false);
         btnDelete.addActionListener(this);
 
+        btnCancel = new JButton("Cancel");
+        btnCancel.setPreferredSize(new Dimension(90, 30));
+        btnCancel.setEnabled(false);
+        btnCancel.setFocusPainted(false);
+        btnCancel.addActionListener(this);
+
         GridBagConstraints gbcControls = new GridBagConstraints();
         gbcControls.insets = new Insets(5, 5, 5, 5);
 
@@ -130,6 +137,8 @@ public class SlangFrame extends JFrame implements ActionListener {
         panelButtonControls.add(btnEdit);
         panelButtonControls.add(Box.createHorizontalStrut(10));
         panelButtonControls.add(btnDelete);
+        panelButtonControls.add(Box.createHorizontalStrut(10));
+        panelButtonControls.add(btnCancel);
 
         gbcControls.gridx = 0;
         gbcControls.gridy = 2;
@@ -233,7 +242,9 @@ public class SlangFrame extends JFrame implements ActionListener {
         table.getColumnModel().getColumn(0).setPreferredWidth(30);
         table.getColumnModel().getColumn(1).setPreferredWidth(120);
         table.getColumnModel().getColumn(2).setPreferredWidth(400);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        table.getColumnModel().getColumn(3).setMaxWidth(0);
+        table.getColumnModel().getColumn(3).setMinWidth(0);
+        table.getColumnModel().getColumn(3).setPreferredWidth(0);
         table.getTableHeader().setFont(new Font(new JLabel().getFont().getFontName(), Font.PLAIN, 14));
         table.getTableHeader().setEnabled(false);
         table.getSelectionModel().addListSelectionListener(this::handleSelectRowTable);
@@ -250,6 +261,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         tfSearch = new JTextField();
         tfSearch.setColumns(30);
         tfSearch.setPreferredSize(new Dimension(200, 30));
+        tfSearch.setBackground(Color.WHITE);
         tfSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent event) {
@@ -387,6 +399,10 @@ public class SlangFrame extends JFrame implements ActionListener {
             handleDelete();
         }
 
+        if (source.equals(btnCancel)) {
+            setDefaultState();
+        }
+
         if (source.equals(btnRestoreDefault)) {
             handleRestoreDefault();
         }
@@ -405,19 +421,150 @@ public class SlangFrame extends JFrame implements ActionListener {
         tfDefinition.setText(model.getValueAt(row, 2).toString());
         tfDefinition.setCaretPosition(0);
 
-        btnEdit.setEnabled(true);
+        setEnableButtonAEDC(false, true, true, true);
     }
 
     private void handleAdd() {
+        if (actionState == ActionState.None) {
+            setAddingOrEditingState(ActionState.Adding);
+        } else if (actionState == ActionState.Adding) {
+            String slang = tfSlang.getText();
+            String definition = tfDefinition.getText();
 
+            if (slang.isBlank() || definition.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Slang and Definition is required");
+                return;
+            }
+
+            int choice = JOptionPane.YES_OPTION;
+
+            String message = """
+                    This slang word is already exists.
+                    Yes to add new slang word.
+                    No to overwrite all duplicate slang words.
+                    Cancel to discard.
+                    """;
+
+            if (SlangDictionary.getInstance().isExists(slang)) {
+                choice = JOptionPane.showConfirmDialog(this, message, "Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+            }
+
+            if (choice == JOptionPane.YES_OPTION) {
+                SlangDictionary.getInstance().addNew(slang, definition);
+            } else {
+                SlangDictionary.getInstance().addOverwrite(slang, definition);
+            }
+
+            reloadModel(SlangDictionary.getInstance().getAll());
+            setDefaultState();
+        }
     }
 
     private void handleEdit() {
+        if (actionState == ActionState.None) {
+            setAddingOrEditingState(ActionState.Editing);
+        } else if (actionState == ActionState.Editing) {
+            int selectedRow = table.getSelectedRow();
+            String slang = (String) model.getValueAt(selectedRow, 1);
+            String oldDefinition = (String) model.getValueAt(selectedRow, 2);
+            int definitionIndex = Integer.parseInt((String) model.getValueAt(selectedRow, 3));
 
+            String newDefinition = tfDefinition.getText();
+
+            if (newDefinition.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Definition is required");
+                return;
+            }
+
+            if (!newDefinition.equals(oldDefinition)) {
+                SlangDictionary.getInstance().set(slang, newDefinition, definitionIndex);
+                reloadModel(SlangDictionary.getInstance().getAll());
+            }
+
+            setDefaultState();
+        }
     }
 
     private void handleDelete() {
+        int selectedRow = table.getSelectedRow();
 
+        if (selectedRow == -1) {
+            return;
+        }
+
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this slang word?", "Warning", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            String slang = (String) model.getValueAt(selectedRow, 1);
+            String definition = (String) model.getValueAt(selectedRow, 2);
+            int definitionIndex = Integer.parseInt((String) model.getValueAt(selectedRow, 3));
+
+            if (SlangDictionary.getInstance().remove(slang, definitionIndex)) {
+                reloadModel(SlangDictionary.getInstance().getAll());
+            }
+        }
+
+        setDefaultState();
+    }
+
+    private void setAddingOrEditingState(ActionState state) {
+        if (state == ActionState.Adding) {
+            setEnableButtonAEDC(true, false, false, true);
+
+            btnAdd.setText("Create");
+
+            tfSlang.setEditable(true);
+            tfSlang.requestFocus();
+            tfSlang.selectAll();
+        } else if (state == ActionState.Editing) {
+            setEnableButtonAEDC(false, true, false, true);
+            btnEdit.setText("Update");
+        }
+
+        tfDefinition.setEditable(true);
+
+        if (!tfSlang.isEditable()) {
+            tfDefinition.requestFocus();
+            tfDefinition.selectAll();
+        }
+
+        table.setEnabled(false);
+
+        btnSearch.setEnabled(false);
+        btnHistory.setEnabled(false);
+
+        tfSearch.setEditable(false);
+
+        actionState = state;
+    }
+
+    private void setDefaultState() {
+        setEnableButtonAEDC(true, false, false, false);
+
+        btnEdit.setText("Edit");
+        btnAdd.setText("Add");
+
+        tfSlang.setText("");
+        tfSlang.setEditable(false);
+        tfDefinition.setText("");
+        tfDefinition.setEditable(false);
+
+        table.setEnabled(true);
+        table.clearSelection();
+
+        btnSearch.setEnabled(true);
+        btnHistory.setEnabled(true);
+
+        tfSearch.setEditable(true);
+
+        actionState = ActionState.None;
+    }
+
+    private void setEnableButtonAEDC(boolean add, boolean edit, boolean delete, boolean cancel) {
+        btnAdd.setEnabled(add);
+        btnEdit.setEnabled(edit);
+        btnDelete.setEnabled(delete);
+        btnCancel.setEnabled(cancel);
     }
 
     private void handleRestoreDefault() {
@@ -425,12 +572,8 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         if (choice == JOptionPane.YES_NO_OPTION) {
             SlangDictionary.getInstance().reset();
-            String[][] data = SlangDictionary.getInstance().getAll();
-
-            model.setRowCount(0);
-            for (String[] row : data) {
-                model.addRow(row);
-            }
+            reloadModel(SlangDictionary.getInstance().getAll());
+            setDefaultState();
         }
     }
 
@@ -460,10 +603,7 @@ public class SlangFrame extends JFrame implements ActionListener {
         lbSearchTime.setText(String.format("%ss", (end - start) / 1000.0));
         lbSearchResultsCount.setText(String.format("%d results", data.length));
 
-        model.setRowCount(0);
-        for (String[] row : data) {
-            model.addRow(row);
-        }
+        reloadModel(data);
     }
 
     private void handleShowHistory() {
@@ -498,5 +638,13 @@ public class SlangFrame extends JFrame implements ActionListener {
     private void handleShowQuizStatistics() {
         SlangQuizStatisticsDialog dialog = new SlangQuizStatisticsDialog(this);
         dialog.showDialog();
+    }
+
+    private void reloadModel(String[][] data) {
+        lastSearchKeyword = "";
+        model.setRowCount(0);
+        for (String[] row : data) {
+            model.addRow(row);
+        }
     }
 }

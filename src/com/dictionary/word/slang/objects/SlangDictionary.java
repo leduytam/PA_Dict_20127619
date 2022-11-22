@@ -37,6 +37,79 @@ public class SlangDictionary {
         return results.toArray(String[][]::new);
     }
 
+    public void addNew(String slang, String definition) {
+        if (slang.isBlank() || definition.isBlank()) {
+            return;
+        }
+
+        List<String> definitions = slangMap.get(slang);
+
+        if (definitions == null) {
+            definitions = new ArrayList<>();
+        }
+
+        definitions.add(definition);
+        slangMap.put(slang, definitions);
+        saveToFile();
+    }
+
+    public void addOverwrite(String slang, String definition) {
+        if (slang.isBlank() || definition.isBlank()) {
+            return;
+        }
+
+        List<String> definitions = slangMap.get(slang);
+
+        if (definitions == null) {
+            definitions = new ArrayList<>();
+        }
+
+        definitions.clear();
+        definitions.add(definition);
+        slangMap.put(slang, definitions);
+        saveToFile();
+    }
+
+    public boolean isExists(String slang) {
+        return slangMap.get(slang) != null;
+    }
+
+    public boolean set(String slang, String definition, int definitionIndex) {
+        if (slang.isBlank() || definition.isBlank()) {
+            return false;
+        }
+
+        List<String> definitions = slangMap.get(slang);
+
+        if (definitions == null || definitionIndex < 0 || definitionIndex >= definitions.size()) {
+            return false;
+        }
+
+        definitions.set(definitionIndex, definition);
+        slangMap.put(slang, definitions);
+        saveToFile();
+
+        return true;
+    }
+
+    public boolean remove(String slang, int definitionIndex) {
+        if (slang.isBlank()) {
+            return false;
+        }
+
+        List<String> definitions = slangMap.get(slang);
+
+        if (definitions == null || definitionIndex < 0 || definitionIndex >= definitions.size()) {
+            return false;
+        }
+
+        definitions.remove(definitionIndex);
+        slangMap.put(slang, definitions);
+        saveToFile();
+
+        return true;
+    }
+
     private void saveToFile() {
         FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
@@ -89,10 +162,11 @@ public class SlangDictionary {
 
     public void reset() {
         slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
+        saveToFile();
     }
 
     private static void addEntryToList(List<String[]> lst, Map.Entry<String, List<String>> entry) {
-        int indexOfDefinition = 1;
+        int indexOfDefinition = 0;
         for (String definition : entry.getValue()) {
             lst.add(new String[]{
                     String.valueOf(lst.size()),
