@@ -13,9 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class SlangQuizStatisticsDialog extends JDialog {
-    public SlangQuizStatisticsDialog(Frame parent) {
-        super(parent, true);
+public class SlangQuizScoresDialog extends JDialog {
+    SlangQuizScoresDialog() {
+        setModal(true);
         initComponents();
     }
 

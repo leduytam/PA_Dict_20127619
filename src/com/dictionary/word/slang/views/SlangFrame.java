@@ -2,7 +2,6 @@ package com.dictionary.word.slang.views;
 
 import com.dictionary.word.slang.objects.SlangDictionary;
 import com.dictionary.word.slang.utils.Constant;
-import com.dictionary.word.slang.utils.FileIO;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,7 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.Serial;
 import java.util.AbstractMap;
-import java.util.List;
 
 public class SlangFrame extends JFrame implements ActionListener {
     private final DefaultTableModel model;
@@ -28,14 +26,6 @@ public class SlangFrame extends JFrame implements ActionListener {
     private JLabel lbSearchResultsCount;
 
     private JTable table;
-
-    private JButton btnRandom;
-    private JTextField tfSlangRandom;
-    private JTextField tfDefinitionRandom;
-
-    private JButton btnQuiz;
-    private JButton btnQuizStatistics;
-    private JComboBox<String> cbxQuiz;
 
     private JTextField tfSlang;
     private JTextField tfDefinition;
@@ -142,82 +132,6 @@ public class SlangFrame extends JFrame implements ActionListener {
         gbcControls.gridwidth = 2;
         panelControls.add(panelButtonControls, gbcControls);
 
-        // ========================= QUIZ PANEL =========================
-        JPanel panelQuiz = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
-        panelQuiz.setBorder(BorderFactory.createTitledBorder("Quizzes"));
-
-        btnQuiz = new JButton("Let's play");
-        btnQuiz.setFocusPainted(false);
-        btnQuiz.addActionListener(this);
-        btnQuiz.setPreferredSize(new Dimension(110, 30));
-
-        cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
-        cbxQuiz.setPreferredSize(new Dimension(90, 30));
-
-        btnQuizStatistics = new JButton("View score statistics");
-        btnQuizStatistics.setFocusPainted(false);
-        btnQuizStatistics.addActionListener(this);
-        btnQuizStatistics.setPreferredSize(new Dimension(200, 30));
-
-        panelQuiz.add(btnQuiz);
-        panelQuiz.add(cbxQuiz);
-        panelQuiz.add(btnQuizStatistics);
-
-        // ========================= RANDOM PANEL =========================
-        JPanel panelRandom = new JPanel(new GridBagLayout());
-        panelRandom.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Did you know?"),
-                BorderFactory.createEmptyBorder(10, 10, 5, 10)
-        ));
-
-        JLabel lbSlangRandom = new JLabel("Slang: ");
-        JLabel lbDefinitionRandom = new JLabel("Definition: ");
-
-        tfSlangRandom = new JTextField();
-        tfSlangRandom.setPreferredSize(new Dimension(300, 30));
-        tfSlangRandom.setEditable(false);
-        tfSlangRandom.setBackground(Color.WHITE);
-
-        tfDefinitionRandom = new JTextField();
-        tfDefinitionRandom.setPreferredSize(new Dimension(300, 30));
-        tfDefinitionRandom.setEditable(false);
-        tfDefinitionRandom.setBackground(Color.WHITE);
-
-        lbSlangRandom.setLabelFor(tfSlangRandom);
-        lbDefinitionRandom.setLabelFor(tfDefinitionRandom);
-
-        btnRandom = new JButton("Random");
-        btnRandom.setFocusPainted(false);
-        btnRandom.setPreferredSize(new Dimension(100, 30));
-        btnRandom.addActionListener(this);
-        btnRandom.doClick();
-
-        GridBagConstraints gbcRandom = new GridBagConstraints();
-        gbcRandom.insets = new Insets(5, 5, 5, 5);
-
-        gbcRandom.gridx = 0;
-        gbcRandom.gridy = 0;
-        gbcRandom.anchor = GridBagConstraints.WEST;
-
-        panelRandom.add(lbSlangRandom, gbcRandom);
-        gbcRandom.gridy = 1;
-        panelRandom.add(lbDefinitionRandom, gbcRandom);
-
-        gbcRandom.gridx = 1;
-        gbcRandom.gridy = 0;
-        gbcRandom.weightx = 1;
-        gbcRandom.fill = GridBagConstraints.HORIZONTAL;
-
-        panelRandom.add(tfSlangRandom, gbcRandom);
-        gbcRandom.gridy = 1;
-        panelRandom.add(tfDefinitionRandom, gbcRandom);
-
-        gbcRandom.gridx = 1;
-        gbcRandom.gridy = 2;
-        JPanel panelRandomButton = new JPanel(new FlowLayout(FlowLayout.TRAILING, 0, 0));
-        panelRandomButton.add(btnRandom);
-        panelRandom.add(panelRandomButton, gbcRandom);
-
         // ========================= TABLE PANEL =========================
         JPanel panelTable = new JPanel(new GridLayout());
 
@@ -312,9 +226,9 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         panelLeft.add(panelControls);
         panelLeft.add(Box.createVerticalStrut(20));
-        panelLeft.add(panelQuiz);
+        panelLeft.add(new SlangQuizPanel());
         panelLeft.add(Box.createVerticalStrut(20));
-        panelLeft.add(panelRandom);
+        panelLeft.add(new SlangRandomPanel());
         panelLeft.add(Box.createVerticalStrut(148));
         panelLeft.add(btnRestoreDefault);
 
@@ -368,18 +282,6 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         if (source.equals(btnHistory)) {
             handleShowHistory();
-        }
-
-        if (source.equals(btnRandom)) {
-            handleShowRandomSlang();
-        }
-
-        if (source.equals(btnQuiz)) {
-            handleShowQuizGame();
-        }
-
-        if (source.equals(btnQuizStatistics)) {
-            handleShowQuizStatistics();
         }
 
         if (source.equals(btnAdd)) {
@@ -496,7 +398,6 @@ public class SlangFrame extends JFrame implements ActionListener {
 
         if (choice == JOptionPane.YES_OPTION) {
             String slang = (String) model.getValueAt(selectedRow, 1);
-            String definition = (String) model.getValueAt(selectedRow, 2);
             int definitionIndex = Integer.parseInt((String) model.getValueAt(selectedRow, 3));
 
             if (SlangDictionary.getInstance().remove(slang, definitionIndex)) {
@@ -580,7 +481,7 @@ public class SlangFrame extends JFrame implements ActionListener {
     private void handleSearch() {
         int index = cbxSearchBy.getSelectedIndex();
 
-        String[][] data = null;
+        String[][] data;
         String keyword = tfSearch.getText();
 
         long start = System.currentTimeMillis();
@@ -608,29 +509,6 @@ public class SlangFrame extends JFrame implements ActionListener {
             tfSearch.setText(result.getValue());
             btnSearch.doClick();
         }
-    }
-
-    private void handleShowRandomSlang() {
-        List<String[]> slang = SlangDictionary.getInstance().generateRandomSlangList(1);
-
-        tfSlangRandom.setText(slang.get(0)[0]);
-        tfSlangRandom.setCaretPosition(0);
-
-        tfDefinitionRandom.setText(slang.get(0)[1]);
-        tfDefinitionRandom.setCaretPosition(0);
-    }
-
-    private void handleShowQuizGame() {
-        SlangQuizDialog dialog = new SlangQuizDialog(this, cbxQuiz.getSelectedIndex() == 1);
-        int score = dialog.showDialog();
-        List<Integer> scores = FileIO.readScores(Constant.Path.SCORES);
-        scores.add(score);
-        FileIO.writeScores(scores, Constant.Path.SCORES);
-    }
-
-    private void handleShowQuizStatistics() {
-        SlangQuizStatisticsDialog dialog = new SlangQuizStatisticsDialog(this);
-        dialog.showDialog();
     }
 
     private void reloadModel(String[][] data) {

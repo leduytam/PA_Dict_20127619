@@ -20,8 +20,8 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
     private JLabel lbScore;
     private JLabel lbCurrentQuiz;
 
-    public SlangQuizDialog(Frame parent, boolean isReverse) {
-        super(parent, true);
+    SlangQuizDialog(boolean isReverse) {
+        setModal(true);
 
         me = this;
         quizzes = SlangDictionary.getInstance().generateRandomQuizzes(10, isReverse);
@@ -84,7 +84,7 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         panelContainer.add(panelScore);
         panelContainer.setPreferredSize(new Dimension(600, 400));
 
-        add(panelContainer);
+        setContentPane(panelContainer);
     }
 
     public int showDialog() {
