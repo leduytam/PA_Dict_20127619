@@ -197,7 +197,7 @@ public class SlangDictionary {
             return null;
         }
 
-        ArrayList<String[]> results = new ArrayList<>();
+        List<String[]> results = new ArrayList<>();
         List<Integer> indices = Generator.randDistinctIntArray(0, slangMap.size() - 1, size);
 
         int i = 0;
@@ -238,8 +238,8 @@ public class SlangDictionary {
             return null;
         }
 
-        ArrayList<String> randomOptions = new ArrayList<>();
-        ArrayList<SlangQuiz> quizzes = new ArrayList<>();
+        List<String> randomOptions = new ArrayList<>();
+        List<SlangQuiz> quizzes = new ArrayList<>();
 
         for (String[] slang : randomSlangList) {
             randomOptions.add(slang[optionIndex]);
@@ -250,7 +250,7 @@ public class SlangDictionary {
         for (int i = 0, j = 0; i < size; i++) {
             String question = randomSlangList.get(i)[questionIndex];
             String correctOption = randomSlangList.get(i)[optionIndex];
-            ArrayList<String> incorrectOptions = new ArrayList<String>();
+            List<String> incorrectOptions = new ArrayList<>();
 
             for (int k = 0; k < 3; k++) {
                 if (correctOption.equals(randomOptions.get(j))) {

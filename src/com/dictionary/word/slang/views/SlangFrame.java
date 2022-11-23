@@ -48,7 +48,12 @@ public class SlangFrame extends JFrame implements ActionListener {
     private void initComponents() {
         // ========================= CONTROLS PANEL =========================
         JPanel panelControls = new JPanel(new GridBagLayout());
-        panelControls.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Controls"), BorderFactory.createEmptyBorder(10, 10, 5, 10)));
+        panelControls.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createTitledBorder("Controls"),
+                        BorderFactory.createEmptyBorder(10, 10, 5, 10)
+                )
+        );
 
         tfSlang = new JTextField();
         tfSlang.setPreferredSize(new Dimension(300, 30));
@@ -149,7 +154,11 @@ public class SlangFrame extends JFrame implements ActionListener {
         table.getTableHeader().setEnabled(false);
         table.getSelectionModel().addListSelectionListener(this::handleSelectRowTable);
 
-        JScrollPane spTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane spTable = new JScrollPane(
+                table,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+        );
         spTable.setPreferredSize(new Dimension(600, 600));
         table.getTableHeader().setPreferredSize(new Dimension(spTable.getHeight(), 30));
 
@@ -339,7 +348,12 @@ public class SlangFrame extends JFrame implements ActionListener {
                     """;
 
             if (SlangDictionary.getInstance().isExists(slang)) {
-                choice = JOptionPane.showConfirmDialog(this, message, "Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+                choice = JOptionPane.showConfirmDialog(
+                        this,
+                        message,
+                        "Warning",
+                        JOptionPane.YES_NO_CANCEL_OPTION
+                );
             }
 
             if (choice == JOptionPane.YES_OPTION) {
@@ -385,7 +399,12 @@ public class SlangFrame extends JFrame implements ActionListener {
             return;
         }
 
-        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this slang word?", "Warning", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete this slang word?",
+                "Warning",
+                JOptionPane.YES_NO_OPTION
+        );
 
         if (choice == JOptionPane.YES_OPTION) {
             String slang = (String) model.getValueAt(selectedRow, 1);
@@ -460,7 +479,12 @@ public class SlangFrame extends JFrame implements ActionListener {
     }
 
     private void handleRestoreDefault() {
-        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to restore data to default?", "Warning", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to restore data to default?",
+                "Warning",
+                JOptionPane.YES_NO_OPTION
+        );
 
         if (choice == JOptionPane.YES_NO_OPTION) {
             SlangDictionary.getInstance().reset();

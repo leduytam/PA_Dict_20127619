@@ -32,7 +32,12 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
-                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Warning", JOptionPane.YES_NO_OPTION);
+                int choice = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure you want to quit?",
+                        "Warning",
+                        JOptionPane.YES_NO_OPTION
+                );
 
                 if (choice == JOptionPane.YES_OPTION) {
                     dispose();
@@ -54,7 +59,8 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
 
         btnOptions = new JButton[4];
         for (int i = 0; i < btnOptions.length; i++) {
-            btnOptions[i] = new JButton(String.format("<html><p>%s</p></html>", quizzes.get(currentQuiz).getOptions().get(i)));
+            String option = quizzes.get(currentQuiz).getOptions().get(i);
+            btnOptions[i] = new JButton(String.format("<html><p>%s</p></html>", option));
             btnOptions[i].setPreferredSize(new Dimension(250, 100));
             btnOptions[i].setActionCommand("check#" + i);
             btnOptions[i].addActionListener(this);
@@ -101,7 +107,10 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         currentQuiz++;
 
         if (currentQuiz == quizzes.size()) {
-            JOptionPane.showMessageDialog(null, String.format("Congratulation! Your score is: %d", score));
+            JOptionPane.showMessageDialog(
+                    null,
+                    String.format("Congratulation! Your score is: %d", score)
+            );
             setVisible(false);
             return;
         }
@@ -110,7 +119,8 @@ public class SlangQuizDialog extends JDialog implements ActionListener {
         lbCurrentQuiz.setText(String.format("Current quiz: %d/%d", currentQuiz + 1, quizzes.size()));
 
         for (int i = 0; i < btnOptions.length; i++) {
-            btnOptions[i].setText(String.format("<html><p>%s</p></html>", quizzes.get(currentQuiz).getOptions().get(i)));
+            String option = quizzes.get(currentQuiz).getOptions().get(i);
+            btnOptions[i].setText(String.format("<html><p>%s</p></html>", option));
         }
     }
 

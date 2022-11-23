@@ -40,7 +40,10 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
             public void mouseClicked(MouseEvent event) {
                 if (event.getClickCount() == 2) {
                     if (listHistory.getSelectedValue() != null) {
-                        result = new AbstractMap.SimpleEntry<>(cbxHistoryBy.getSelectedIndex(), listHistory.getSelectedValue());
+                        result = new AbstractMap.SimpleEntry<>(
+                                cbxHistoryBy.getSelectedIndex(),
+                                listHistory.getSelectedValue()
+                        );
                         setVisible(false);
                     }
                 }
@@ -91,7 +94,12 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
             return;
         }
 
-        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to clear the history?", "Warning", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to clear the history?",
+                "Warning",
+                JOptionPane.YES_NO_OPTION
+        );
 
         if (choice == JOptionPane.YES_OPTION) {
             if (cbxHistoryBy.getSelectedIndex() == 0) {

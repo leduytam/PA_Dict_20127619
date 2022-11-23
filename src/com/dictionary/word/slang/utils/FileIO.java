@@ -7,9 +7,10 @@ import java.util.List;
 public class FileIO {
     public static SortedMap<String, List<String>> readMap(String filePath) {
         TreeMap<String, List<String>> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(Constant.Regex.SLANG_DEFINITION_SPLIT_REGEX);
 
@@ -18,7 +19,9 @@ public class FileIO {
                 }
 
                 String slang = tokens[0].trim();
-                ArrayList<String> definitions = new ArrayList<>(Arrays.asList(tokens[1].split(Constant.Regex.DEFINITION_SPLIT_REGEX)));
+                List<String> definitions = new ArrayList<>(
+                        Arrays.asList(tokens[1].split(Constant.Regex.DEFINITION_SPLIT_REGEX))
+                );
 
                 if (map.containsKey(slang)) {
                     List<String> newDefinitions = map.get(slang);
@@ -28,12 +31,11 @@ public class FileIO {
                     map.put(slang, definitions);
                 }
             }
-
-            return map;
         } catch (IOException exception) {
             ErrorLogger.severe(exception);
-            return null;
         }
+
+        return map;
     }
 
     public static void writeMap(SortedMap<String, List<String>> map, String filePath) {
@@ -50,10 +52,11 @@ public class FileIO {
     }
 
     public static List<String> readHistory(String filePath) {
-        ArrayList<String> history = new ArrayList<>();
-        String line;
+        List<String> history = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
             while ((line = reader.readLine()) != null) {
                 if (line.isBlank()) {
                     continue;
