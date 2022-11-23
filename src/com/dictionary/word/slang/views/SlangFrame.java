@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.Serial;
-import java.util.AbstractMap;
+import java.util.Map;
 
 public class SlangFrame extends JFrame implements ActionListener {
     private final DefaultTableModel model;
@@ -182,7 +182,7 @@ public class SlangFrame extends JFrame implements ActionListener {
             }
         });
 
-        cbxSearchBy = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
+        cbxSearchBy = new JComboBox<>(Constant.View.SLANG_TYPES);
         cbxSearchBy.setPreferredSize(new Dimension(100, 30));
 
         btnSearch = new JButton("Search");
@@ -517,7 +517,7 @@ public class SlangFrame extends JFrame implements ActionListener {
 
     private void handleShowHistory() {
         SlangHistoryDialog dialog = new SlangHistoryDialog(this);
-        AbstractMap.SimpleEntry<Integer, String> result = dialog.showDialog();
+        Map.Entry<Integer, String> result = dialog.showDialog();
 
         if (result != null) {
             cbxSearchBy.setSelectedIndex(result.getKey());

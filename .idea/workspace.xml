@@ -7,12 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b129966-5249-4138-8042-99687ed3a129" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/slang_word_dictionary_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/slang-dictionary.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/slang-dictionary.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/slang-word-dictionary.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PA_Dict_20127619.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/scores.dat" beforeDir="false" afterPath="$PROJECT_DIR$/data/scores.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangDictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/objects/SlangDictionary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/utils/FileIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangHistoryDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangHistoryDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizScoresDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/dictionary/word/slang/views/SlangQuizScoresDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +102,7 @@
       <workItem from="1669123774335" duration="15200000" />
       <workItem from="1669184260247" duration="5609000" />
       <workItem from="1669205575058" duration="64000" />
-      <workItem from="1669205765693" duration="641000" />
+      <workItem from="1669205765693" duration="4412000" />
     </task>
     <servers />
   </component>

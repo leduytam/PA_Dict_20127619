@@ -3,12 +3,16 @@ package com.dictionary.word.slang.views;
 import com.dictionary.word.slang.objects.SlangDictionary;
 import com.dictionary.word.slang.utils.Constant;
 import com.dictionary.word.slang.utils.FileIO;
+import com.dictionary.word.slang.utils.Triplet;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.AbstractMap;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class SlangQuizPanel extends JPanel implements ActionListener {
     private JButton btnQuiz;
@@ -26,7 +30,7 @@ public class SlangQuizPanel extends JPanel implements ActionListener {
         btnQuiz.addActionListener(this);
         btnQuiz.setPreferredSize(new Dimension(110, 30));
 
-        cbxQuiz = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
+        cbxQuiz = new JComboBox<>(Constant.View.SLANG_TYPES);
         cbxQuiz.setPreferredSize(new Dimension(100, 30));
 
         btnQuizStatistics = new JButton("View score statistics");
@@ -59,9 +63,9 @@ public class SlangQuizPanel extends JPanel implements ActionListener {
 
             SlangQuizDialog dialog = new SlangQuizDialog(cbxQuiz.getSelectedIndex() == 1);
             int score = dialog.showDialog();
-            List<Integer> scores = FileIO.readIntegers(Constant.Path.SCORES);
-            scores.add(score);
-            FileIO.writeIntegers(scores, Constant.Path.SCORES);
+            List<Triplet<String, Integer, Date>> scores = FileIO.readScores(Constant.Path.SCORES);
+            scores.add(new Triplet<>(cbxQuiz.getSelectedItem().toString() , score, new Date()));
+            FileIO.writeScores(scores, Constant.Path.SCORES);
         }
 
         if (source.equals(btnQuizStatistics)) {

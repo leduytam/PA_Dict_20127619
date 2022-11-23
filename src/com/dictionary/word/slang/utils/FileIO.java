@@ -1,6 +1,8 @@
 package com.dictionary.word.slang.utils;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -109,13 +111,13 @@ public class FileIO {
 
     /**
      * @param filePath The path of the file to be read.
-     * @return The list of integers in the file.
-     *         Each integer is a line in the file.
+     * @return The list of scores in the file.
+     *         Each score is a line in the file.
      *         Ignore invalid lines.
      *         If the file does not exist, return an empty list.
      */
-    public static List<Integer> readIntegers(String filePath) {
-        List<Integer> integers = new ArrayList<>();
+    public static List<Triplet<String, Integer, Date>> readScores(String filePath) {
+        List<Triplet<String, Integer, Date>> scores = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -125,25 +127,40 @@ public class FileIO {
                     continue;
                 }
 
+                String[] tokens = line.trim().split(",");
+
+                if (tokens.length != 3) {
+                    continue;
+                }
+
                 try {
-                    integers.add(Integer.parseInt(line));
-                } catch (NumberFormatException ignored) {}
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String type = tokens[0];
+                    int score = Integer.parseInt(tokens[1]);
+                    Date date = formatter.parse(tokens[2]);
+                    scores.add(new Triplet<>(type, score, date));
+                } catch (NumberFormatException | ParseException ignored) {}
             }
         } catch (IOException ignored) {}
 
-        return integers;
+        return scores;
     }
 
     /**
-     * Write a list of integers to a file.
-     * Each integer is a line in the file.
-     * @param integers List of integers.
+     * Write scores to file.
+     * Each line is a score with format "type,score".
+     * @param scores List of scores to write.
      * @param filePath The path of the file.
      */
-    public static void writeIntegers(List<Integer> integers, String filePath) {
+    public static void writeScores(List<Triplet<String, Integer, Date>> scores, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (Integer integer : integers) {
-                writer.write(integer.toString());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            for (Triplet<String, Integer, Date> score : scores) {
+                writer.write(score.getFirst());
+                writer.write(",");
+                writer.write(score.getSecond().toString());
+                writer.write(",");
+                writer.write(formatter.format(score.getThird()));
                 writer.newLine();
             }
         } catch (IOException exception) {

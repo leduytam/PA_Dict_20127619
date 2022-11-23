@@ -1,16 +1,22 @@
 package com.dictionary.word.slang.views;
 
+import com.dictionary.word.slang.utils.Triplet;
 import com.dictionary.word.slang.utils.Constant;
 import com.dictionary.word.slang.utils.FileIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class SlangQuizScoresDialog extends JDialog {
@@ -20,18 +26,27 @@ public class SlangQuizScoresDialog extends JDialog {
     }
 
     private void initComponents() {
-        List<Integer> scores = FileIO.readIntegers(Constant.Path.SCORES);
+        List<Triplet<String, Integer, Date>> scores = FileIO.readScores(Constant.Path.SCORES);
 
-        JFreeChart lineChart = ChartFactory.createXYLineChart(
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "",
-                "Attempts",
+                "Times",
                 "Scores",
-                createDataset(scores)
+                createDataset(scores),
+                true,
+                true,
+                true
         );
 
-        lineChart.removeLegend();
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        renderer.setDefaultShapesVisible(true);
+        DateAxis domain = (DateAxis) plot.getDomainAxis();
+        domain.setDateFormatOverride(formatter);
+        domain.setVerticalTickLabels(true);
 
-        ChartPanel chartPanel = new ChartPanel(lineChart);
+        ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 500));
         chartPanel.setMouseZoomable(true, false);
         chartPanel.setMouseWheelEnabled(true);
@@ -39,13 +54,18 @@ public class SlangQuizScoresDialog extends JDialog {
         setContentPane(chartPanel);
     }
 
-    private XYDataset createDataset(List<Integer> scores) {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries(10);
-        dataset.addSeries(series);
+    private TimeSeriesCollection createDataset(List<Triplet<String, Integer, Date>> scores) {
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-        for (int i = 0; i < scores.size(); i++) {
-            series.add(i + 1, scores.get(i));
+        for (Triplet<String, Integer, Date> score : scores) {
+            String seriesName = score.getFirst();
+
+            if (dataset.indexOf(seriesName) == -1) {
+                dataset.addSeries(new TimeSeries(seriesName));
+            }
+
+            TimeSeries series = dataset.getSeries(seriesName);
+            series.add(new Second(score.getThird()), score.getSecond());
         }
 
         return dataset;

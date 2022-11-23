@@ -8,9 +8,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.AbstractMap;
+import java.util.Map;
 
 class SlangHistoryDialog extends JDialog implements ActionListener {
-    private AbstractMap.SimpleEntry<Integer, String> result = null;
+    private Map.Entry<Integer, String> result = null;
     private DefaultListModel<String> model;
     private JButton btnClear;
     private JComboBox<String> cbxHistoryBy;
@@ -30,7 +31,7 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
         btnClear.setFocusPainted(false);
         btnClear.addActionListener(this);
 
-        cbxHistoryBy = new JComboBox<>(Constant.View.SEARCH_BY_VALUES);
+        cbxHistoryBy = new JComboBox<>(Constant.View.SLANG_TYPES);
         cbxHistoryBy.setPreferredSize(new Dimension(150, 30));
         cbxHistoryBy.addActionListener(this);
 
@@ -40,10 +41,11 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
             public void mouseClicked(MouseEvent event) {
                 if (event.getClickCount() == 2) {
                     if (listHistory.getSelectedValue() != null) {
-                        result = new AbstractMap.SimpleEntry<>(
+                        result = new AbstractMap.SimpleEntry<Integer, String>(
                                 cbxHistoryBy.getSelectedIndex(),
                                 listHistory.getSelectedValue()
-                        );
+                        ) {
+                        };
                         setVisible(false);
                     }
                 }
@@ -67,7 +69,7 @@ class SlangHistoryDialog extends JDialog implements ActionListener {
         add(panelContainer);
     }
 
-    public AbstractMap.SimpleEntry<Integer, String> showDialog() {
+    public Map.Entry<Integer, String> showDialog() {
         setTitle("History");
         pack();
         setLocationRelativeTo(getParent());

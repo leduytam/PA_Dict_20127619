@@ -177,7 +177,7 @@ public class SlangDictionary {
         char nextLastChar = (char) (slang.charAt(slang.length() - 1) + 1);
         String end = slang.substring(0, slang.length() - 1) + nextLastChar;
         SortedMap<String, List<String>> resultsMap = slangMap.subMap(slang, end);
-        ArrayList<String[]> results = new ArrayList<>();
+        List<String[]> results = new ArrayList<>();
 
         for (Map.Entry<String, List<String>> entry : resultsMap.entrySet()) {
             addEntryToList(results, entry);
@@ -198,7 +198,7 @@ public class SlangDictionary {
 
         SlangHistory.getInstance().addDefinition(definition);
 
-        ArrayList<String[]> results = new ArrayList<>();
+        List<String[]> results = new ArrayList<>();
 
         for (Map.Entry<String, List<String>> entry : slangMap.entrySet()) {
             int indexOfDefinition = 0;
