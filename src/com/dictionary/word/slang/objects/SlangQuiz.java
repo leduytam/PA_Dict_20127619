@@ -20,10 +20,6 @@ public class SlangQuiz {
         Collections.shuffle(options);
     }
 
-    public boolean checkAnswer(int index) {
-        return options.get(index).equals(correctOption);
-    }
-
     public List<String> getOptions() {
         return options;
     }
@@ -32,6 +28,20 @@ public class SlangQuiz {
         return question;
     }
 
+    /**
+     * @param index The index of the option
+     * @return True if the option at the index is the correct option
+     */
+    public boolean checkAnswer(int index) {
+        return options.get(index).equals(correctOption);
+    }
+
+    /**
+     * @param length The length of the question to be cut
+     * @return The short question with the custom length.
+     *         If the given length is greater than the length of the question,
+     *         the question will be returned.
+     */
     public String getShortQuestion(int length) {
         if (question.length() <= length) {
             return question;

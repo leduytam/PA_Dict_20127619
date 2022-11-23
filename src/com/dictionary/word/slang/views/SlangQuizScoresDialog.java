@@ -20,7 +20,7 @@ public class SlangQuizScoresDialog extends JDialog {
     }
 
     private void initComponents() {
-        List<Integer> scores = FileIO.readScores(Constant.Path.SCORES);
+        List<Integer> scores = FileIO.readIntegers(Constant.Path.SCORES);
 
         JFreeChart lineChart = ChartFactory.createXYLineChart(
                 "",

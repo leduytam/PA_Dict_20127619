@@ -23,14 +23,17 @@ public class SlangDictionary {
         return instance;
     }
 
+    /**
+     * Load the slang dictionary from file
+     */
     private void loadData() {
         FileIO.tryToCreateDirectory(Constant.Path.DATA_DIRECTORY);
 
         if (FileIO.isFileExists(Constant.Path.SLANG_DICTIONARY)) {
-            slangMap = FileIO.readMap(Constant.Path.SLANG_DICTIONARY);
+            slangMap = FileIO.readSlangMap(Constant.Path.SLANG_DICTIONARY);
         } else if (FileIO.isFileExists(Constant.Path.BASE_SLANG_DICTIONARY)) {
-            slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
-            FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+            slangMap = FileIO.readSlangMap(Constant.Path.BASE_SLANG_DICTIONARY);
+            FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
         } else {
             String message = "No database found!!!\n" +
                     "Please add your database with name base-slang-dictionary.dat\n" +
@@ -42,10 +45,18 @@ public class SlangDictionary {
         }
     }
 
+    /**
+     * @return The number of unique slang words in the dictionary
+     */
     public int getUniqueSize() {
         return slangMap.size();
     }
 
+    /**
+     * @return All the data in the dictionary with the format:
+     * [index, slang, definition, definitionIndex]
+     * ...
+     */
     public String[][] getAll() {
         List<String[]> results = new ArrayList<>();
 
@@ -56,6 +67,13 @@ public class SlangDictionary {
         return results.toArray(String[][]::new);
     }
 
+    /**
+     * Add new slang to the dictionary
+     * If the slang already exists, add the definition to the list of definitions
+     * Otherwise, add the new slang to the dictionary
+     * @param slang The slang word
+     * @param definition The definition of the slang word
+     */
     public void addNew(String slang, String definition) {
         if (slang.isBlank() || definition.isBlank()) {
             return;
@@ -69,9 +87,16 @@ public class SlangDictionary {
 
         definitions.add(definition);
         slangMap.put(slang, definitions);
-        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+        FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
+    /**
+     * Add new slang to the dictionary
+     * If the slang already exists, the definitions will be replaced with the new one
+     * Otherwise, the new slang will be added to the dictionary
+     * @param slang The slang word
+     * @param definition The definition of the slang word
+     */
     public void addOverwrite(String slang, String definition) {
         if (slang.isBlank() || definition.isBlank()) {
             return;
@@ -86,13 +111,19 @@ public class SlangDictionary {
         definitions.clear();
         definitions.add(definition);
         slangMap.put(slang, definitions);
-        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+        FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
     public boolean isExists(String slang) {
         return slangMap.get(slang) != null;
     }
 
+    /**
+     * Update the slang definition
+     * @param slang The slang word
+     * @param definition The definition of the slang word
+     * @param definitionIndex The index of the definition
+     */
     public void set(String slang, String definition, int definitionIndex) {
         if (slang.isBlank() || definition.isBlank()) {
             return;
@@ -106,9 +137,14 @@ public class SlangDictionary {
 
         definitions.set(definitionIndex, definition);
         slangMap.put(slang, definitions);
-        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+        FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
+    /**
+     * @param slang The slang word
+     * @param definitionIndex The index of definition
+     * @return True if remove successfully, otherwise return false
+     */
     public boolean remove(String slang, int definitionIndex) {
         if (slang.isBlank()) {
             return false;
@@ -122,11 +158,15 @@ public class SlangDictionary {
 
         definitions.remove(definitionIndex);
         slangMap.put(slang, definitions);
-        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+        FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
 
         return true;
     }
 
+    /**
+     * @param slang The slang word to search
+     * @return The results that starts with the given slang word
+     */
     public String[][] searchBySlang(String slang) {
         if (slang.isBlank()) {
             return getAll();
@@ -146,6 +186,11 @@ public class SlangDictionary {
         return results.toArray(String[][]::new);
     }
 
+    /**
+     *
+     * @param definition The definition to search
+     * @return The results that contains the definition
+     */
     public String[][] searchByDefinition(String definition) {
         if (definition.isBlank()) {
             return getAll();
@@ -173,11 +218,20 @@ public class SlangDictionary {
         return results.toArray(String[][]::new);
     }
 
+    /**
+     * Reset slang dictionary to base slang dictionary and save to file
+     */
     public void reset() {
-        slangMap = FileIO.readMap(Constant.Path.BASE_SLANG_DICTIONARY);
-        FileIO.writeMap(slangMap, Constant.Path.SLANG_DICTIONARY);
+        slangMap = FileIO.readSlangMap(Constant.Path.BASE_SLANG_DICTIONARY);
+        FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
     }
 
+    /**
+     * Add entry to list with format:
+     * Entry[slang, List[definitions]] -> String[index, slang, definition, definitionIndex]
+     * @param lst List<String[]> to add entry to
+     * @param entry Entry<String, List<String>> to add
+     */
     private static void addEntryToList(List<String[]> lst, Map.Entry<String, List<String>> entry) {
         int indexOfDefinition = 0;
         for (String definition : entry.getValue()) {
@@ -192,6 +246,11 @@ public class SlangDictionary {
         }
     }
 
+    /**
+     * If the current size of unique slang words in the dataset is less than the given size,
+     * then the return list will be null
+     * @return A random list of unique slang words
+     */
     public List<String[]> generateRandomSlangList(int size) {
         if (size <= 0 || size > slangMap.size()) {
             return null;
@@ -223,6 +282,14 @@ public class SlangDictionary {
         return results;
     }
 
+    /**
+     * If the current size of unique slang in the dataset is less than the given size / 4,
+     * then the return list will be null
+     * @param size The number of quizzes to be generated.
+     * @param isReverse If true, the quiz will be in the form of "definition - slang".
+     *                  If false, the quiz will be in the form of "slang - definition".
+     * @return A list of quizzes.
+     */
     public List<SlangQuiz> generateRandomQuizzes(int size, boolean isReverse) {
         int questionIndex = 0;
         int optionIndex = 1;

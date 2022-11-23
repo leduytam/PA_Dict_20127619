@@ -24,4 +24,8 @@ public class Constant {
         public static final String[] TABLE_COLUMN_NAMES = {"#", "Slang", "Definition", "Definition Index"};
         public static final String[] SEARCH_BY_VALUES = {"Slang", "Definition"};
     }
+
+    public static class ENV {
+        public static final boolean IS_DEVELOPMENT_MODE = true;
+    }
 }

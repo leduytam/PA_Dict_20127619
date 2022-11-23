@@ -11,8 +11,8 @@ public class SlangHistory {
     private final List<String> definitionHistory;
 
     private SlangHistory() {
-        slangHistory = FileIO.readHistory(Constant.Path.SLANG_HISTORY);
-        definitionHistory = FileIO.readHistory(Constant.Path.DEFINITION_HISTORY);
+        slangHistory = FileIO.readLines(Constant.Path.SLANG_HISTORY);
+        definitionHistory = FileIO.readLines(Constant.Path.DEFINITION_HISTORY);
     }
 
     public static synchronized SlangHistory getInstance() {
@@ -23,26 +23,6 @@ public class SlangHistory {
         return instance;
     }
 
-    public void addSlang(String slang) {
-        if (slang.isBlank()) {
-            return;
-        }
-
-        slangHistory.remove(slang);
-        slangHistory.add(0, slang);
-        FileIO.writeHistory(slangHistory, Constant.Path.SLANG_HISTORY);
-    }
-
-    public void addDefinition(String definition) {
-        if (definition.isBlank()) {
-            return;
-        }
-
-        definitionHistory.remove(definition);
-        definitionHistory.add(0, definition);
-        FileIO.writeHistory(definitionHistory, Constant.Path.DEFINITION_HISTORY);
-    }
-
     public List<String> getSlangHistory() {
         return slangHistory;
     }
@@ -51,21 +31,63 @@ public class SlangHistory {
         return definitionHistory;
     }
 
+    /**
+     * Add a new slang word to the beginning of the slang history
+     * If the history already contains the slang, remove it and add it to the beginning of the list
+     * @param slang The slang word to add
+     */
+    public void addSlang(String slang) {
+        if (slang.isBlank()) {
+            return;
+        }
+
+        slangHistory.remove(slang);
+        slangHistory.add(0, slang);
+        FileIO.writeLines(slangHistory, Constant.Path.SLANG_HISTORY);
+    }
+
+    /**
+     * Add a new definition to the beginning of the definition history
+     * If the history already contains the definition, remove it and add it to the beginning of the list
+     * @param definition The definition to add
+     */
+    public void addDefinition(String definition) {
+        if (definition.isBlank()) {
+            return;
+        }
+
+        definitionHistory.remove(definition);
+        definitionHistory.add(0, definition);
+        FileIO.writeLines(definitionHistory, Constant.Path.DEFINITION_HISTORY);
+    }
+
+    /**
+     * Clear slang history and save to file
+     */
     public void clearSlangHistory() {
         slangHistory.clear();
         saveSlangHistoryToFile();
     }
 
+    /**
+     * Clear definition history and save to file
+     */
     public void clearDefinitionHistory() {
         definitionHistory.clear();
         saveDefinitionHistoryToFile();
     }
 
+    /**
+     * Save slang history to file
+     */
     private void saveSlangHistoryToFile() {
-        FileIO.writeHistory(slangHistory, Constant.Path.SLANG_HISTORY);
+        FileIO.writeLines(slangHistory, Constant.Path.SLANG_HISTORY);
     }
 
+    /**
+     * Save definition history to file
+     */
     private void saveDefinitionHistoryToFile() {
-        FileIO.writeHistory(definitionHistory, Constant.Path.DEFINITION_HISTORY);
+        FileIO.writeLines(definitionHistory, Constant.Path.DEFINITION_HISTORY);
     }
 }

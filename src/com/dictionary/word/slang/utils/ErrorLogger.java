@@ -23,10 +23,18 @@ public class ErrorLogger {
         }
     }
 
+    /**
+     * Log the stack trace of the exception to the log file and the console.
+     * @param exception The exception to be logged
+     */
     public static void severe(Exception exception) {
         logger.severe(convertStackTraceToString(exception));
     }
 
+    /**
+     * @param exception The exception
+     * @return The string representation of the stack trace
+     */
     private static String convertStackTraceToString(Exception exception) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

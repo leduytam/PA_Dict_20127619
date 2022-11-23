@@ -59,9 +59,9 @@ public class SlangQuizPanel extends JPanel implements ActionListener {
 
             SlangQuizDialog dialog = new SlangQuizDialog(cbxQuiz.getSelectedIndex() == 1);
             int score = dialog.showDialog();
-            List<Integer> scores = FileIO.readScores(Constant.Path.SCORES);
+            List<Integer> scores = FileIO.readIntegers(Constant.Path.SCORES);
             scores.add(score);
-            FileIO.writeScores(scores, Constant.Path.SCORES);
+            FileIO.writeIntegers(scores, Constant.Path.SCORES);
         }
 
         if (source.equals(btnQuizStatistics)) {
