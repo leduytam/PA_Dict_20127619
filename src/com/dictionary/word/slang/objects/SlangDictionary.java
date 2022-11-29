@@ -115,7 +115,7 @@ public class SlangDictionary {
     }
 
     public boolean isExists(String slang) {
-        return slangMap.get(slang) != null;
+        return slangMap.containsKey(slang);
     }
 
     /**
@@ -157,7 +157,13 @@ public class SlangDictionary {
         }
 
         definitions.remove(definitionIndex);
-        slangMap.put(slang, definitions);
+
+        if (definitions.isEmpty()) {
+            slangMap.remove(slang);
+        } else {
+            slangMap.put(slang, definitions);
+        }
+
         FileIO.writeSlangMap(slangMap, Constant.Path.SLANG_DICTIONARY);
 
         return true;
